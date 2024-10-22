@@ -1,0 +1,71 @@
+<div class="d-flex justify-content-center align-items-center login-style">
+    <div class="col d-flex align-items-center justify-content-center">
+        <div class="card card-user">
+            <div class="card-body d-flex flex-column align-items-center">
+                <img src="/assets/img/brgy_logo_white.png" class="img-fluid mb-4" alt="Sample image"
+                    style="height: 100px;">
+                <form [formGroup]="registrationForm" (ngSubmit)="register()">
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <label
+                            [ngClass]="{'text-danger': registrationForm.get('first_name')?.touched && registrationForm.get('first_name')?.invalid}">First
+                            Name</label>
+                        <input type="text" formControlName="first_name" class="form-control"
+                            [ngClass]="{'is-invalid': registrationForm.get('first_name')?.touched && registrationForm.get('first_name')?.invalid}">
+                        <div *ngIf="registrationForm.get('first_name')!.hasError('required')" class="invalid-feedback">
+                            This field is required</div>
+                    </div>
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <label
+                            [ngClass]="{'text-danger': registrationForm.get('last_name')?.touched && registrationForm.get('last_name')?.invalid}">Last
+                            Name</label>
+                        <input type="text" formControlName="last_name" class="form-control"
+                            [ngClass]="{'is-invalid': registrationForm.get('last_name')?.touched && registrationForm.get('last_name')?.invalid}">
+                        <div *ngIf="registrationForm.get('last_name')!.hasError('required')" class="invalid-feedback">
+                            This field is required</div>
+                    </div>
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <label
+                            [ngClass]="{'text-danger': registrationForm.touched && registrationForm.get('email')!.invalid, 'text-success': registrationForm.touched && registrationForm.get('email')!.valid}">Email</label>
+                        <input type="email" formControlName="email" class="form-control"
+                            [ngClass]="{'is-invalid': registrationForm.touched && registrationForm.get('email')!.invalid, 'is-valid': registrationForm.touched && registrationForm.get('email')!.valid}"
+                            placeholder="Enter Email Address">
+                        <div *ngIf="registrationForm.get('email')!.errors" class="invalid-feedback">Please enter a valid
+                            email address</div>
+                    </div>
+                    <div class="mb-3">
+                        <label
+                            [ngClass]="{'text-danger': registrationForm.get('password')?.touched && registrationForm.get('password')?.invalid}">Password</label>
+                        <input type="password" formControlName="password" class="form-control"
+                            [ngClass]="{'is-invalid': registrationForm.get('password')?.touched && registrationForm.get('password')?.invalid, 'is-valid': registrationForm.get('password')?.touched && registrationForm.get('password')?.valid}"
+                            placeholder="Enter Password">
+                        <div *ngIf="registrationForm.get('password')!.hasError('required')" class="invalid-feedback">
+                            This field is required</div>
+                    </div>
+                    <div class="mb-3">
+                        <label
+                            [ngClass]="{'text-danger': registrationForm.get('confirm_password')?.touched && registrationForm.get('confirm_password')?.invalid || registrationForm.hasError('passwordMismatch')}">Confirm
+                            Password</label>
+                        <input type="password" formControlName="confirm_password" class="form-control"
+                            [ngClass]="{'is-invalid': registrationForm.get('confirm_password')?.touched && registrationForm.get('confirm_password')?.invalid || registrationForm.hasError('passwordMismatch'), 'is-valid': registrationForm.get('confirm_password')?.touched && registrationForm.get('confirm_password')?.valid}"
+                            placeholder="Confirm Password">
+                        <div *ngIf="registrationForm.get('confirm_password')!.hasError('required')"
+                            class="invalid-feedback">This field is required</div>
+                        <div *ngIf="registrationForm.hasError('passwordMismatch')" class="invalid-feedback">Passwords do
+                            not match.</div>
+                    </div>
+                    <div class="alert alert-danger" role="alert" *ngIf="registrationError">
+                        Invalid email or password. Please try again.
+                    </div>
+                    <div class="alert alert-success" role="alert" *ngIf="registrationSuccess">
+                        Registered Successfully
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-md"
+                            [disabled]="!registrationForm.valid">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

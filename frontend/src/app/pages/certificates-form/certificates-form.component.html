@@ -1,0 +1,55 @@
+<div class="row">
+	<div class="col-10">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title"> Certificate </h4>
+			</div>
+			<div class="card-body">
+				<!-- <div style="position: relative;">
+					<img style="width: 150px; height: auto; position: absolute; top: 0; left: 20px;" src="../../../assets/img/brgy_logo_white.png" alt="Barangay Logo">
+					<div style="display: inline-block; margin-left: 500px; text-align: center; align-content: center;">
+						<h1 style="color: #3598db; font-size: 2rem; margin-top: 10px; margin-bottom: 5px;">Barangay Rosario</h1>
+						<h2 style="color: #666; font-size: 1.5rem; margin-bottom: 20px;">Rosario, Pasig City</h2>
+					</div>
+				</div>
+				<div style="margin-top: 20px;">&nbsp;</div>
+				<div style="margin-top: 20px;">&nbsp;</div>
+				
+				<div style="margin-left: 30px; text-align: left;">
+					<p><strong>To whom it may concern:</strong></p>
+				
+					<p style="text-indent: 50px">This is to certify that <strong>[Name]</strong>, <strong>[Age]</strong> years old and a resident of Barangay Rosario, Pasig City is known to be of good moral character and a law-abiding citizen in the community.</p>
+				
+					<p style="text-indent: 50px">To certify further, he/she has no derogatory and/or criminal records filed in this barangay.</p>
+				
+					<p style="text-indent: 50px">Issued this <strong>[Date]</strong> day of <strong>[Month]</strong>, 2024 at Barangay Rosario, Pasig City upon request of the interested party for whatever legal purpose it may serve.</p>
+				</div>
+				
+				<div style="position: absolute; bottom: 20px; right: 30px; text-align: right;">
+					<p>[Barangay Captain]</p>
+					<p>Barangay Captain</p>
+				</div> -->
+				<div class="row">
+					<div class="col">
+						<div class="mb-3">
+							<label for="contact_number" class="form-label">Certificate name</label>
+							<input type="text" class="form-control" id="certificateName" [(ngModel)]="certificate.certificate_type">
+						</div>
+					</div>
+				</div>					
+				<editor
+					apiKey="vep0pjyo6dz39sz3r5b6ed457haq19s4813emuicx83g5rdf"
+					[init]="{
+						height: 700,
+						plugins: 'link image code',
+						toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image | code'
+					}"
+					[(ngModel)]="certificate.certificate_value"
+				></editor>
+				<div class="mt-3 d-flex justify-content-end">
+                    <button class="btn btn-primary ms-auto" (click)="saveCertificate()">Save</button>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>

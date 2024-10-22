@@ -1,0 +1,55 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Census </h4>
+				<button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold m-1 ms-auto d-flex justify-content-end" (click)="addCensusProfile()" *ngIf="userRole ==='admin'">Add Census Profile</button>
+			</div>
+			<div class="card-body">
+				<!-- Add this input field for search -->
+				<input type="text" class="form-control mb-2" placeholder="Search" [(ngModel)]="searchQuery" (input)="search()">
+				<div class="table-responsive">
+					<table class="table">
+						<thead class="text-primary">
+							<th>
+								Last Name
+							</th>
+							<th>
+								First Name
+							</th>
+							<th>
+								Middle Name
+							</th>
+							<th>
+								&nbsp;
+							</th>
+						</thead>
+						<tbody>
+							<tr *ngFor="let census of paginatedCensus">
+								<td>{{ census.last_name }}</td>
+								<td>{{ census.first_name }}</td>
+								<td>{{ census.middle_name }}</td>
+								<td>{{ census.email }}</td>
+								<td>
+									<button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold m-1" (click)="view(census)">View</button>
+									<button type="button" class="btn btn-danger btn-rounded btn-sm fw-bold m-1" (click)="delete(census.id)" *ngIf="userRole ==='admin'">Delete</button>
+								</td>
+							</tr>
+							<tr *ngIf="paginatedCensus.length == 0">
+								<td colspan="5">NO DATA</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="pagination d-flex justify-content-end">
+					<button class="btn btn-primary btn-sm" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Previous</button>
+					<ng-container *ngFor="let page of visiblePages()">
+						<button class="btn btn-primary btn-sm" [class.active]="currentPage === page" (click)="goToPage(page)">{{ page }}</button>
+					</ng-container>
+					<button class="btn btn-primary btn-sm" [disabled]="currentPage === totalPages()" (click)="goToPage(currentPage + 1)">Next</button>
+				</div>				
+			</div>
+		</div>
+	</div>
+</div>
+<!-- <app-confirmation-dialog></app-confirmation-dialog> -->

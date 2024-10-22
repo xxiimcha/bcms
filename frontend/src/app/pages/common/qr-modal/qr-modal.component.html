@@ -1,0 +1,25 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <!-- Header content goes here -->
+    </div>
+    <div class="modal-body" #modalBody>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col d-flex justify-content-center" #qrCodeCanvas>
+                    <qr-code 
+                        [value]="currentURL"
+                        size="650" 
+                        errorCorrectionLevel="H"
+                        centerImageSrc="/assets/img/brgy_logo_white.png"
+                        centerImageSize="150"
+                    >
+                    </qr-code>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer p-0">
+        <button type="submit" class="btn btn-primary m-1" (click)="downloadQRCode()">Download</button>
+        <button type="button" class="btn btn-outline-dark m-1" (click)="cancelAction()">Cancel</button>
+    </div>
+</div>

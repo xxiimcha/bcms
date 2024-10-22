@@ -1,0 +1,82 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Resident Section </h4>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-10">
+						<label for="purok" class="form-label">Search</label>
+						<input type="text" class="form-control mb-2" placeholder="Search" [(ngModel)]="searchQuery" (input)="search()">
+					</div>
+					<div class="col-2">
+						<div class="mb-3">
+							<label for="purok" class="form-label">Purok</label>
+							<select class="form-select" aria-label="Default select example" (change)="filterResidentByPurok($event)">
+								<option value=""></option>
+								<option value="Purok 1">Purok 1</option>
+								<option value="Purok 2">Purok 2</option>
+								<option value="Purok 3">Purok 3</option>
+								<option value="Purok 4">Purok 4</option>
+								<option value="Purok 5">Purok 5</option>
+								<option value="Purok 6">Purok 6</option>
+								<option value="Purok 7">Purok 7</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="table-responsive">
+					<table class="table">
+						<thead class="text-primary">
+							<th>
+								Last Name
+							</th>
+							<th>
+								First Name
+							</th>
+							<th>
+								Middle Name
+							</th>
+							<th>
+								Email
+							</th>
+							<th>
+								&nbsp;
+							</th>
+						</thead>
+						<tbody>
+							<tr *ngFor="let resident of paginatedResidents">
+								<td>{{ resident.last_name }}</td>
+								<td>{{ resident.first_name }}</td>
+								<td>{{ resident.middle_name }}</td>
+								<td>{{ resident.email }}</td>
+								<td>
+									<button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold m-1" (click)="viewPersonalDetails(resident)">View</button>
+									<!-- <button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold m-1" (click)="editPersonalDetails(resident)">Edit</button> -->
+									<!-- <button type="button" class="btn btn-danger btn-rounded btn-sm fw-bold m-1" (click)="deletePersonalDetails(resident.id)">Delete</button> -->
+								</td>
+							</tr>
+							<tr *ngIf="paginatedResidents.length == 0">
+								<td colspan="5">NO DATA</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- <div class="pagination">
+					<button class="btn btn-primary" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Previous</button>
+					<button class="btn btn-primary" *ngFor="let page of totalPages()" [class.active]="currentPage === page" (click)="goToPage(page)">{{ page }}</button>
+					<button class="btn btn-primary" [disabled]="currentPage === totalPages().length" (click)="goToPage(currentPage + 1)">Next</button>
+				</div> -->
+				<div class="pagination d-flex justify-content-end">
+					<button class="btn btn-primary btn-sm" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Previous</button>
+					<ng-container *ngFor="let page of visiblePages()">
+						<button class="btn btn-primary btn-sm" [class.active]="currentPage === page" (click)="goToPage(page)">{{ page }}</button>
+					</ng-container>
+					<button class="btn btn-primary btn-sm" [disabled]="currentPage === totalPages()" (click)="goToPage(currentPage + 1)">Next</button>
+				</div>				
+			</div>
+		</div>
+	</div>
+</div>
+<!-- <app-confirmation-dialog></app-confirmation-dialog> -->

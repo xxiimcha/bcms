@@ -1,0 +1,16 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <!-- Header content goes here -->
+    </div>
+    <div class="modal-body" #modalBody>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col" [innerHTML]="certificateHTML"></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer p-0">
+        <button type="button" class="btn btn-danger m-1 btn-sm" (click)="cancelAction()">Cancel</button>
+        <button type="button" class="btn btn-success m-1 btn-sm" (click)="printAction()">Print Form</button>
+    </div>
+</div>

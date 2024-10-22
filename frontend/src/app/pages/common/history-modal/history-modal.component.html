@@ -1,0 +1,33 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <!-- Header content goes here -->
+    </div>
+    <div class="modal-body" #modalBody>
+        <div class="container-fluid">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="text-primary">
+                        <th>Certificate Type</th>
+                        <th>Date Issued</th>
+                        <th>Purpose</th>
+                        <th>Status</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let resident of residentDocumentsHistory">
+                            <td>{{ resident.certificate_type }}</td>
+                            <td>{{ resident.date_issued }}</td>
+                            <td>{{ resident.purpose }}</td>
+                            <td>{{ resident.status }}</td>
+                        </tr>
+                        <tr *ngIf="residentDocumentsHistory.length == 0">
+                            <td colspan="4">NO DATA</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer p-0">
+        <button type="button" class="btn btn-danger m-1 btn-sm" (click)="cancelAction()">Cancel</button>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+html, body, .wrapper {
+    height: 100%;
+    overflow: hidden;
+}
+
+.full-wrapper {
+    display: flex;
+}
+
+.main-panel {
+    flex-grow: 1; /* Occupy remaining space */
+}
+
+.full-width {
+    width: 100%;
+}

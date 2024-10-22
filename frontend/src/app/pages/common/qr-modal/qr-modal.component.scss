@@ -1,0 +1,16 @@
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 800px;
+}
+
+.container-fluid,
+.row {
+    height: 100%;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.col {
+    height: 100%;
+}

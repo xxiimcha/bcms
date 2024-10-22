@@ -1,0 +1,29 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title mt-0">Census Profile</h4>
+    </div>
+    <div class="modal-body" #modalBody *ngIf="!isLoading">
+        <div class="container-fluid">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="text-primary">
+                        <tr>
+                            <th>Names</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let resident of data">
+                            <td>{{ resident.first_name }} {{ resident.last_name }}</td>
+                        </tr>
+                        <tr *ngIf="data.length == 0">
+                            <td>NO DATA</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer p-0" *ngIf="!isLoading">
+        <button type="button" class="btn btn-danger m-1 btn-sm" (click)="cancelAction()">Cancel</button>
+    </div>
+</div>

@@ -1,0 +1,232 @@
+<form [formGroup]="profileForm">
+    <div class="p-3 form-group">
+        <div class="row">
+            <div class="col-4">
+                <div class="mb-3">
+                    <label [ngClass]="{'text-danger': profileForm.get('first_name')?.touched && profileForm.get('first_name')?.invalid}">First Name</label>
+                    <input type="text" formControlName="first_name" class="form-control" [ngClass]="{'is-invalid': profileForm.get('first_name')?.touched && profileForm.get('first_name')?.invalid}">
+                    <div *ngIf="profileForm.get('first_name')!.hasError('required')" class="invalid-feedback">
+                        This field is required
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="mb-3">
+                    <label for="text" class="form-label">Middle Name</label>
+                    <input type="text" formControlName="middle_name" class="form-control">
+                </div>						
+            </div>
+            <div class="col-4">
+                <div class="mb-3">
+                    <label [ngClass]="{'text-danger': profileForm.get('last_name')?.touched && profileForm.get('last_name')?.invalid}">Last Name</label>
+                    <input type="text" formControlName="last_name" class="form-control" [ngClass]="{'is-invalid': profileForm.get('last_name')?.touched && profileForm.get('last_name')?.invalid}">
+                    <div *ngIf="profileForm.get('last_name')!.hasError('required')" class="invalid-feedback">
+                        This field is required
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="mb-3">
+                    <label for="street" class="form-label">Street</label>
+                    <input type="text" formControlName="street" class="form-control">
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="mb-3">
+                    <label for="city" class="form-label">City</label>
+                    <input type="text" formControlName="city" class="form-control">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <label for="zipcode" class="form-label">Zipcode</label>
+                    <input type="text" formControlName="zipcode" class="form-control">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <label for="purok" class="form-label">Purok</label>
+                    <select class="form-select" aria-label="Default select example" id="purok" name="purok" formControlName="purok">
+                        <option value="Purok 1">Purok 1</option>
+                        <option value="Purok 2">Purok 2</option>
+                        <option value="Purok 3">Purok 3</option>
+                        <option value="Purok 4">Purok 4</option>
+                        <option value="Purok 5">Purok 5</option>
+                        <option value="Purok 6">Purok 6</option>
+                        <option value="Purok 7">Purok 7</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="mb-3">
+                    <label for="gender" class="form-label">Gender</label>
+                    <select class="form-select" aria-label="Default select example" id="gender" name="gender" formControlName="gender">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="mb-3">
+                    <label for="age" class="form-label">Age</label>
+                    <input type="text" formControlName="age" class="form-control">
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <label for="civil_status" class="form-label">Civil Status</label>
+                    <select class="form-select" aria-label="Default select example" id="civil_status" name="civil_status" formControlName="civil_status">
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                        <option value="Divorced">Divorced</option>
+                        <option value="Widowed">Widowed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="mb-3">
+                    <label for="household_count" class="form-label">Household Count</label>
+                    <input type="text" formControlName="household_count" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1">
+                <div class="mb-3">
+                    <label for="employed" class="form-label">Employed</label>
+                    <select class="form-select" aria-label="Default select example" id="employed" name="employed" formControlName="employed">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="mb-3">
+                    <label for="occupation" class="form-label">Occupation</label>
+                    <input type="text" formControlName="occupation" class="form-control">
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="mb-3">
+                    <label for="monthly_salary" class="form-label">Monthly Salary</label>
+                    <select class="form-select" aria-label="Default select example" id="monthly_salary" name="monthly_salary" formControlName="monthly_salary">
+                        <option value="Less than 5,000">Less than 5,000</option>
+                        <option value="10,001 - 15,000">10,001 - 15,000</option>
+                        <option value="15,001 - 20,000">15,001 - 20,000</option>
+                        <option value="20,001 - 25,000">20,001 - 25,000</option>
+                        <option value="25,001 - 30,000">25,001 - 30,000</option>
+                        <option value="30,001 - 35,000">30,001 - 35,000</option>
+                        <option value="35,001 - 40,000">35,001 - 40,000</option>
+                        <option value="40,001 and above">40,001 and above</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="mb-3">
+                    <label [ngClass]="{'text-danger': profileForm.get('email')?.touched && profileForm.get('email')!.invalid, 'text-success': profileForm.get('email')?.touched && profileForm.get('email')!.valid}">Email</label>
+                    <input type="email" formControlName="email" class="form-control" [ngClass]="{'is-invalid': profileForm.get('email')!.touched && profileForm.get('email')!.invalid, 'is-valid': profileForm.get('email')!.touched && profileForm.get('email')!.valid}">
+                    <div *ngIf="profileForm.get('email')!.touched && profileForm.get('email')!.invalid" class="invalid-feedback">Please enter a valid email address</div>
+                    <div *ngIf="profileForm.get('email')!.hasError('required') && profileForm.get('email')!.touched" class="invalid-feedback">This field is required</div>
+                </div>
+            </div>            
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="mb-3">
+                    <label for="contact_number" class="form-label">Contact Number</label>
+                    <input type="text" formControlName="contact_number" class="form-control">
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="mb-3">
+                    <label for="place_of_birth" class="form-label">Place of Birth</label>
+                    <input type="text" formControlName="place_of_birth" class="form-control">
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="mb-3">
+                    <label [ngClass]="{'text-danger': profileForm.get('birthdate')?.touched && profileForm.get('birthdate')?.invalid}">Birth Date</label>
+                    <input type="date" formControlName="birthdate" class="form-control" [ngClass]="{'is-invalid': profileForm.get('birthdate')?.touched && profileForm.get('birthdate')?.invalid}">
+                    <div *ngIf="profileForm.get('birthdate')!.hasError('required')" class="invalid-feedback">
+                        This field is required
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="mb-3">
+                    <label for="education" class="form-label">Education</label>
+                    <select class="form-select" aria-label="Default select example" id="education" name="education" formControlName="education">
+                        <option value="Some Elementary">Some Elementary</option>
+                        <option value="Elementary Graduate">Elementary Graduate</option>
+                        <option value="Some High School">Some High School</option>
+                        <option value="High School Graduate">High School Graduate</option>
+                        <option value="Some College">Some College</option>
+                        <option value="College Graduate">College Graduate</option>
+                        <option value="Junior High School Graduate">Junior High School Graduate</option>
+                        <option value="Vocational Graduate">Vocational Graduate</option>
+                        <option value="Primary and Below">Primary and Below</option>
+                        <option value="Some ALS">Some ALS</option>
+                        <option value="Masters">Masters</option>
+                        <option value="ALS">ALS</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6" *ngIf="userRole ==='admin' || userRole ==='Kagawad' || userRole ==='Kapitan'">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title"> Recent Certificate History </h4>
+                    </div>
+                    <div class="card-body d-flex flex-row bd-highlight mb-3">
+                        <div class="row" *ngIf="residentDocument">
+                            <div class="col-6 d-flex justify-content-end">Certificate Type:</div><div class="col-6">{{ residentDocument?.certificate_type }}</div>
+                            <div class="col-6 d-flex justify-content-end">Date Issued:</div><div class="col-6">{{ residentDocument?.date_issued }}</div>
+                            <div class="col-6 d-flex justify-content-end">Purpose:</div><div class="col-6">{{ residentDocument?.purpose }}</div>
+                            <div class="col-6 d-flex justify-content-end">Status:</div><div class="col-6">{{ residentDocument?.status }}</div>
+                        </div>
+                        <div class="row" *ngIf="!residentDocument">
+                            <div class="col d-flex justify-content-center">No Requested Form</div>
+                        </div>
+                    </div>
+                    <div class="card-footer" *ngIf="residentDocument">
+                        <div class="row">
+                            <button type="submit" class="btn btn-success" (click)="viewCertificateRequestHistory()">View Request History</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" *ngIf="userRole ==='admin'">
+                <div class="card-body d-flex flex-row bd-highlight mb-3">
+                    <div class="row">
+                        <label for="certificate" class="form-label">Choose Form</label>
+                        <select class="form-select" aria-label="Default select example"  id="certificate" name="certificate" formControlName="certificate" (change)="selectedDocument($event)">
+                            <option *ngFor="let document of documents" value="{{ document.id }}">{{ document.certificate_type }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end" *ngIf="userRole ==='admin'">
+            <button type="submit" class="btn btn-success m-1" (click)="viewCertificate()">View Certificate</button>
+            <button type="submit" class="btn btn-secondary m-1" (click)="navigateBack()" *ngIf="mode== 'view'">Back to List</button>
+            <button type="submit" class="btn btn-danger m-1" (click)="deactivateAccount()" *ngIf="mode== 'edit'">Deactivate Account</button>
+            <button type="submit" class="btn btn-secondary m-1" (click)="cancelFormEdit()" *ngIf="mode== 'edit'">Cancel</button>
+            <button type="submit" class="btn btn-primary m-1" (click)="editForm()" *ngIf="mode== 'view'">Enable Edit</button>
+            <button type="submit" class="btn btn-success m-1" *ngIf="mode== 'view'" (click)="requestCertificate()">Request Certificate</button>
+            <button type="submit" class="btn btn-primary m-1" (click)="submitProfile()" [disabled]="!profileForm.valid" *ngIf="mode != 'view'">Save</button>
+        </div>
+        <div class="d-flex justify-content-end" *ngIf="(userRole !=='admin' && userRole !=='Kagawad' && userRole !=='Kapitan')">
+            <button type="submit" class="btn btn-primary m-1" (click)="editForm()" *ngIf="mode == 'view'">Edit</button>
+            <button type="submit" class="btn btn-primary m-1" (click)="generateQRCode()" *ngIf="mode== 'view'">Generate QR Code</button>
+            <button type="submit" class="btn btn-primary m-1" (click)="submitProfile()" [disabled]="!profileForm.valid" *ngIf="mode != 'view'">Save</button>
+            <button type="submit" class="btn btn-success m-1" *ngIf="mode== 'view'" (click)="requestCertificate()">Request Certificate</button>
+        </div>
+    </div>
+</form>

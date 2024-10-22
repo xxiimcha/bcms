@@ -1,0 +1,29 @@
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.container-fluid,
+.row {
+    height: 100%;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.col {
+    height: 100%;
+}
+.mat-mdc-dialog-container {
+    position: absolute !important;
+}
+
+.mdc-dialog {
+    left: 500px !important;
+    top: 100px !important;
+    width: 40% !important;
+    height: 80% !important;
+}
+.table-responsive {
+    overflow: unset;
+}

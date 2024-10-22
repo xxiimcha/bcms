@@ -1,0 +1,27 @@
+.login-style {
+    background-color: #141730;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.card-user {
+    width: 100%;
+    /* Ensure the card takes full width of its container */
+    max-width: 400px;
+    /* Adjust the maximum width of the card as per your design */
+}
+
+@media (max-width: 768px) {
+    .login-style {
+        padding: 10px;
+        /* Reduce padding for smaller screens */
+    }
+
+    .card-user {
+        max-width: 100%;
+        /* Full width on smaller screens */
+    }
+}

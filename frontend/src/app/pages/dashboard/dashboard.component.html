@@ -1,0 +1,138 @@
+<div class="row mb-1">
+    <div class="col-xl-3 col-lg-6">
+        <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Residents</h5>
+                    </div>
+                </div>
+                <p class="mt-2 mb-4 text-muted text-sm">
+                    <span class="h4 text-uppercase mr-2"><i class="fa fa-male"></i> <i class="fa fa-female"></i> {{ residents.length }}<br>&nbsp;</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Gender</h5>
+                    </div>
+                </div>
+                <p class="mt-2 mb-4 text-muted text-sm">
+                    <span class="h4 text-uppercase mr-2"><i class="fa fa-male"></i> {{ maleCount }} ({{ malePercentage }} %)<br><i class="fa fa-female"></i> {{ femaleCount }} ({{ femalePercentage }} %)</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6">
+        <div class="card card-stats mb-4 mb-xl-0">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase text-muted mb-0">Civil Status</h5>
+                    </div>
+                </div>
+                <p class="mt-2 mb-2 text-muted text-sm">
+                    <span class="text-uppercase mr-2">
+                        Single: {{ singleCount }} ({{ singlePercentage }} %)<br>
+                        Married: {{ marriedCount }} ({{ marriedPercentage }} %)<br>
+                        Separated: {{ separatedCount }} ({{ separatedPercentage }} %)<br>
+                        Widowed: {{ widowedCount }} ({{ widowedPercentage }} %)
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Residents per Classification</h4>
+            </div>
+            <div class="card-body">
+                <apx-chart 
+                    *ngIf="classificationOverviewChart"
+                    [series]="classificationOverviewChart.series" 
+                    [dataLabels]="classificationOverviewChart.dataLabels"
+                    [chart]="classificationOverviewChart.chart" 
+                    [labels]="classificationOverviewChart.labels"
+                ></apx-chart>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Certificate Requests</h4>
+            </div>
+            <div class="card-body">
+                <apx-chart 
+                    *ngIf="certificatesRequestedOverviewChart"
+                    [series]="certificatesRequestedOverviewChart.series" 
+                    [dataLabels]="certificatesRequestedOverviewChart.dataLabels"
+                    [chart]="certificatesRequestedOverviewChart.chart" 
+                    [legend]="certificatesRequestedOverviewChart.legend"
+                    [xaxis]="certificatesRequestedOverviewChart.xaxis" 
+                    [yaxis]="certificatesRequestedOverviewChart.yaxis"
+                    [grid]="certificatesRequestedOverviewChart.grid" 
+                    [stroke]="certificatesRequestedOverviewChart.stroke"
+                    [tooltip]="certificatesRequestedOverviewChart.tooltip" 
+                    [plotOptions]="certificatesRequestedOverviewChart.plotOptions"
+                ></apx-chart>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Predictive Analysis</h4>
+            </div>
+            <div class="card-body">
+                <apx-chart 
+                    *ngIf="populationOverviewChart"
+                    [series]="populationOverviewChart.series" 
+                    [dataLabels]="populationOverviewChart.dataLabels"
+                    [chart]="populationOverviewChart.chart" 
+                    [legend]="populationOverviewChart.legend"
+                    [xaxis]="populationOverviewChart.xaxis" 
+                    [yaxis]="populationOverviewChart.yaxis"
+                    [grid]="populationOverviewChart.grid" 
+                    [stroke]="populationOverviewChart.stroke"
+                    [tooltip]="populationOverviewChart.tooltip" 
+                    [plotOptions]="populationOverviewChart.plotOptions"
+                ></apx-chart>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>About {{ seniorCitizenPercentage }} % belong to Senior Citizen Category</h4>
+                <h6>A healthy distribution of young adult resident can be observed</h6>
+            </div>
+            <div class="card-body">
+                <apx-chart 
+                    *ngIf="ageOverviewChart"
+                    [series]="ageOverviewChart.series" 
+                    [dataLabels]="ageOverviewChart.dataLabels"
+                    [chart]="ageOverviewChart.chart" 
+                    [legend]="ageOverviewChart.legend"
+                    [xaxis]="ageOverviewChart.xaxis" 
+                    [yaxis]="ageOverviewChart.yaxis"
+                    [grid]="ageOverviewChart.grid" 
+                    [stroke]="ageOverviewChart.stroke"
+                    [tooltip]="ageOverviewChart.tooltip" 
+                    [plotOptions]="ageOverviewChart.plotOptions"
+                ></apx-chart>
+            </div>
+        </div>
+    </div>
+</div>
