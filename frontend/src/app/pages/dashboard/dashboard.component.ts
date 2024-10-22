@@ -83,7 +83,7 @@ export class DashboardComponent {
 	ageBracketCounts: number[] = new Array(this.ageBrackets.length).fill(0);
 	seniorCitizenPercentage: number = 0;
 
-	classificationBrackets: string[] = ['Children', 'Youth', 'Senior Citizens', 'Indigents', 'PWD', '4Ps Members'];
+	classificationBrackets: string[] = ['Children', 'Youth', 'Senior Citizens', 'PWD', '4Ps Members'];
 	classificationBracketCount: number[] = new Array(this.classificationBrackets.length).fill(0);
 
 	certificatesBracket: string[] = [];//: { type: string; count: number }[] = [];
@@ -135,7 +135,6 @@ export class DashboardComponent {
 					res.children['ctr'],
 					res.youth['ctr'],
 					res.senior_citizen['ctr'],
-					res.indigents['ctr'],
 					res.pwd['ctr'],
 					res.four_ps['ctr']
 				];
@@ -232,12 +231,9 @@ export class DashboardComponent {
 				this.viewCensusProfile(this.classificationData['senior_citizen']['profile']);
 				break;
 			case 3:
-				this.viewCensusProfile(this.classificationData['indigents']['profile']);
-				break;
-			case 4:
 				this.viewCensusProfile(this.classificationData['pwd']['profile']);
 				break;
-			case 5:
+			case 4:
 				this.viewCensusProfile(this.classificationData['four_ps']['profile']);
 				break;
 			default:
