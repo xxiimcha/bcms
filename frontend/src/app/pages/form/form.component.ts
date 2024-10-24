@@ -81,11 +81,33 @@ export class FormComponent implements OnInit {
             this.initializeForm();
         }
         this.apiService.getDocuments().subscribe(response => {
-            if(response) {
+            if (response) {
                 this.documents = response;
             }
         });
+    
+        // Listen for changes in the birthdate field and calculate age
+        this.profileForm.get('birthdate')?.valueChanges.subscribe(value => {
+            if (value) {
+                const age = this.calculateAge(value);
+                this.profileForm.get('age')?.setValue(age, { emitEvent: false }); // Update age without emitting valueChanges event
+            }
+        });
     }
+    
+    // Function to calculate age based on birthdate
+    private calculateAge(birthdate: string): number {
+        const birthDate = new Date(birthdate);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+    
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+    
+        return age;
+    }    
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['profileData'] && !changes['profileData'].firstChange) {

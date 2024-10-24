@@ -347,30 +347,12 @@ export class DashboardComponent {
 			monthNames.push(data.population[i].year);
 		}
 
-		for (let i = 0; i < data.employment.length; i++) {
-			employed.push(data.employment[i].employed);
-		}
-
-		for (let i = 0; i < data.employment.length; i++) {
-			unemployed.push(data.employment[i].unemployed);
-		}
-
 		this.populationOverviewChart = {
 			series: [
 				{
 					name: 'Population',
 					data: population,
 					color: '#49BEFF',
-				},
-				{
-					name: 'Employed',
-					data: employed,
-					color: '#3fc49c',
-				},
-				{
-					name: 'Unemployed',
-					data: unemployed,
-					color: '#c43f62',
 				}
 			],
 			chart: {
