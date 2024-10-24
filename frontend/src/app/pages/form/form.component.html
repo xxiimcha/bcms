@@ -149,31 +149,6 @@
                 <option value="ALS">ALS</option>
             </select>
         </div>
-    </div>
-
-    <!-- Certificate History (For Admin/Kagawad/Kapitan) -->
-    <div class="row">
-        <div class="col-md-6" *ngIf="userRole ==='admin' || userRole ==='Kagawad' || userRole ==='Kapitan'">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Recent Certificate History</h4>
-                </div>
-                <div class="card-body">
-                    <div class="row" *ngIf="residentDocument">
-                        <div class="col-6 text-end">Certificate Type:</div><div class="col-6">{{ residentDocument?.certificate_type }}</div>
-                        <div class="col-6 text-end">Date Issued:</div><div class="col-6">{{ residentDocument?.date_issued }}</div>
-                        <div class="col-6 text-end">Purpose:</div><div class="col-6">{{ residentDocument?.purpose }}</div>
-                        <div class="col-6 text-end">Status:</div><div class="col-6">{{ residentDocument?.status }}</div>
-                    </div>
-                    <div class="row" *ngIf="!residentDocument">
-                        <div class="col text-center">No Requested Form</div>
-                    </div>
-                </div>
-                <div class="card-footer" *ngIf="residentDocument">
-                    <button type="button" class="btn btn-success" (click)="viewCertificateRequestHistory()">View Request History</button>
-                </div>
-            </div>
-        </div>
         <div class="col-md-6" *ngIf="userRole ==='resident'">
             <label for="certificate" class="form-label">Choose Form</label>
             <select class="form-select" id="certificate" formControlName="certificate" (change)="selectedDocument($event)">
@@ -182,11 +157,57 @@
         </div>
     </div>
 
+    <!-- Certificate History (For Admin/Kagawad/Kapitan) -->
+    <div class="row">
+        <div class="col-md-12" *ngIf="userRole === 'admin' || userRole === 'Kagawad' || userRole === 'Kapitan'">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Recent Certificate History</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Certificate Type</th>
+                                <th>Date Issued</th>
+                                <th>Purpose</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="residentDocument">
+                                <td>{{ residentDocument?.certificate_type }}</td>
+                                <td>{{ residentDocument?.date_issued }}</td>
+                                <td>{{ residentDocument?.purpose }}</td>
+                                <td>{{ residentDocument?.status }}</td>
+                            </tr>
+                            <tr *ngIf="!residentDocument">
+                                <td colspan="4" class="text-center">No Requested Form</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer" *ngIf="residentDocument">
+                    <button type="button" class="btn btn-success" (click)="viewCertificateRequestHistory()">View Request History</button>
+                </div>
+            </div>
+        </div>
+    </div>    
+
     <!-- Action Buttons -->
-    <div class="d-flex justify-content-end mt-3">
-        <button type="button" class="btn btn-primary m-1" (click)="editForm()" *ngIf="mode == 'view'">Edit</button>
-        <button type="button" class="btn btn-primary m-1" (click)="generateQRCode()" *ngIf="mode== 'view'">Generate QR Code</button>
-        <button type="button" class="btn btn-primary m-1" (click)="submitProfile()" [disabled]="!profileForm.valid" *ngIf="mode != 'view'">Save</button>
-        <button type="button" class="btn btn-success m-1" *ngIf="mode== 'view'" (click)="requestCertificate()">Request Certificate</button>
+    <div class="d-flex justify-content-end" *ngIf="userRole ==='admin'">
+        <button type="submit" class="btn btn-success m-1" (click)="viewCertificate()">View Certificate</button>
+        <button type="submit" class="btn btn-secondary m-1" (click)="navigateBack()" *ngIf="mode== 'view'">Back to List</button>
+        <button type="submit" class="btn btn-danger m-1" (click)="deactivateAccount()" *ngIf="mode== 'edit'">Deactivate Account</button>
+        <button type="submit" class="btn btn-secondary m-1" (click)="cancelFormEdit()" *ngIf="mode== 'edit'">Cancel</button>
+        <button type="submit" class="btn btn-primary m-1" (click)="editForm()" *ngIf="mode== 'view'">Enable Edit</button>
+        <button type="submit" class="btn btn-success m-1" *ngIf="mode== 'view'" (click)="requestCertificate()">Request Certificate</button>
+        <button type="submit" class="btn btn-primary m-1" (click)="submitProfile()" [disabled]="!profileForm.valid" *ngIf="mode != 'view'">Save</button>
+    </div>
+    <div class="d-flex justify-content-end" *ngIf="(userRole !=='admin' && userRole !=='Kagawad' && userRole !=='Kapitan')">
+        <button type="submit" class="btn btn-primary m-1" (click)="editForm()" *ngIf="mode == 'view'">Edit</button>
+        <button type="submit" class="btn btn-primary m-1" (click)="generateQRCode()" *ngIf="mode== 'view'">Generate QR Code</button>
+        <button type="submit" class="btn btn-primary m-1" (click)="submitProfile()" [disabled]="!profileForm.valid" *ngIf="mode != 'view'">Save</button>
+        <button type="submit" class="btn btn-success m-1" *ngIf="mode== 'view'" (click)="requestCertificate()">Request Certificate</button>
     </div>
 </form>

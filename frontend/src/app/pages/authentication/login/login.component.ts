@@ -34,7 +34,7 @@ export class LoginComponent {
                 if(!response?.error) {
                     this.loginSuccess = true;
                     setTimeout(() => {
-                        if (response?.role === 'admin' || response?.role === 'Kagawad' || response?.role === 'Kapitan') {
+                        if (response?.role === 'admin' || response?.role === 'Kagawad' || response?.role === 'Kapitan' || response?.role === 'Clearance Staff') {
                             this.router.navigate(['app/dashboard']);
                         } else {
                             this.router.navigate([`/app/residents/profile/view/${response?.id}`]);

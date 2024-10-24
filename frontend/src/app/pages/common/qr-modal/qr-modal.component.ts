@@ -20,7 +20,7 @@ export class QRModalComponent {
 
 	generateSpecialURL() {
 		const currentURL = encodeURIComponent(window.location.href);
-		this.currentURL = `http://192.168.1.37:8000/api/open-in-desktop?url=${currentURL}`;
+		this.currentURL = `http://192.168.254.158:8000/api/open-in-desktop?url=${currentURL}`;
 	}
 	
 

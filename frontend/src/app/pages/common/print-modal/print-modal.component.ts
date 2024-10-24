@@ -31,25 +31,28 @@ export class PrintModalComponent {
     generateCertificateHTML() {
 		const dateIssuedString = this.residentRequest?.date_issued;
 		const purpose = this.residentRequest?.purpose;
-		
+	
 		if (!dateIssuedString) {
 			return;
 		}
 	
-		const [day, month, year] = dateIssuedString.split('/').map(Number);
+		const [month, day, year] = dateIssuedString.split('/').map(Number);
 	
+		// Create the date using year, month (0-based), and day
 		const dateIssued = new Date(year, month - 1, day);
-	
+		
 		const htmlContent = this.certificateContent
 			.replace(/\[Name\]/g, `${this.residentDetail?.first_name} ${this.residentDetail?.last_name}`)
 			.replace(/\[Age\]/g, `${this.residentDetail?.age}`)
-			.replace(/\[Date\]/g, `${dateIssued.getDate()}`)
+			.replace(/\[Date\]/g, `${day}`) // Use 'day' directly
 			.replace(/\[Month\]/g, `${dateIssued.toLocaleString('en', { month: 'long' })}`)
+			.replace(/\[Year\]/g, `${year}`) // If you want to include the year
 			.replace(/\[Purpose\]/g, `${purpose}`)
 			.replace(/\[Barangay Captain\]/g, `Aquilino Dela Cruz, Sr`);
-		
+	
 		this.certificateHTML = this.sanitizer.bypassSecurityTrustHtml(htmlContent);
 	}
+	
 	
 	printAction() {
 		// Construct the HTML content to be copied
