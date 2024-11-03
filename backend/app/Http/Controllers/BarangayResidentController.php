@@ -87,127 +87,127 @@ class BarangayResidentController extends Controller
 
     public function update(Request $request) {
         $barangay_resident = BarangayResident::findOrFail($request->id);
-    
+
         $updates = [];
-    
+
         // Check and update each field if it's different from the current value
         if ($request->has('first_name') && $request->first_name !== $barangay_resident->first_name) {
             $updates['first_name'] = $request->first_name;
         }
-    
+
         if ($request->has('middle_name') && $request->middle_name !== $barangay_resident->middle_name) {
             $updates['middle_name'] = $request->middle_name;
         }
-    
+
         if ($request->has('last_name') && $request->last_name !== $barangay_resident->last_name) {
             $updates['last_name'] = $request->last_name;
         }
-    
+
         if ($request->has('gender') && $request->gender !== $barangay_resident->gender) {
             $updates['gender'] = $request->gender;
         }
-    
+
         if ($request->has('age') && $request->age !== $barangay_resident->age) {
             $updates['age'] = $request->age;
         }
-    
+
         if ($request->has('household_count') && $request->household_count !== $barangay_resident->household_count) {
             $updates['household_count'] = $request->household_count;
         }
-    
+
         if ($request->has('birthdate') && $request->birthdate !== $barangay_resident->birthdate) {
             $updates['birthdate'] = $request->birthdate;
         }
-    
+
         if ($request->has('civil_status') && $request->civil_status !== $barangay_resident->civil_status) {
             $updates['civil_status'] = $request->civil_status;
         }
-    
+
         if ($request->has('email') && $request->email !== $barangay_resident->email) {
             $updates['email'] = $request->email;
         }
-    
+
         if ($request->has('contact_number') && $request->contact_number !== $barangay_resident->contact_number) {
             $updates['contact_number'] = $request->contact_number;
         }
-    
+
         if ($request->has('place_of_birth') && $request->place_of_birth !== $barangay_resident->place_of_birth) {
             $updates['place_of_birth'] = $request->place_of_birth;
         }
-    
+
         if ($request->has('employed') && $request->employed !== $barangay_resident->employed) {
             $updates['employed'] = $request->employed;
         }
-    
+
         if ($request->has('occupation') && $request->occupation !== $barangay_resident->occupation) {
             $updates['occupation'] = $request->occupation;
         }
-    
+
         if ($request->has('monthly_salary') && $request->monthly_salary !== $barangay_resident->monthly_salary) {
             $updates['monthly_salary'] = $request->monthly_salary;
         }
-    
+
         if ($request->has('purok') && $request->purok !== $barangay_resident->purok) {
             $updates['purok'] = $request->purok;
         }
-    
+
         if ($request->has('street') && $request->street !== $barangay_resident->street) {
             $updates['street'] = $request->street;
         }
-    
+
         if ($request->has('city') && $request->city !== $barangay_resident->city) {
             $updates['city'] = $request->city;
         }
-    
+
         if ($request->has('zipcode') && $request->zipcode !== $barangay_resident->zipcode) {
             $updates['zipcode'] = $request->zipcode;
         }
-    
+
         if ($request->has('education') && $request->education !== $barangay_resident->education) {
             $updates['education'] = $request->education;
         }
-    
+
         // New Attributes from JSON
         if ($request->has('address') && $request->address !== $barangay_resident->address) {
             $updates['address'] = $request->address; // Assumes address field exists
         }
-    
+
         if ($request->has('ownership') && $request->ownership !== $barangay_resident->ownership) {
             $updates['ownership'] = $request->ownership; // Assumes ownership field exists
         }
-    
+
         if ($request->has('provincial_address') && $request->provincial_address !== $barangay_resident->provincial_address) {
             $updates['provincial_address'] = $request->provincial_address; // Assumes provincial_address field exists
         }
-    
+
         if ($request->has('length_of_stay') && $request->length_of_stay !== $barangay_resident->length_of_stay) {
             $updates['length_of_stay'] = $request->length_of_stay; // Assumes length_of_stay field exists
         }
-    
+
         if ($request->has('height') && $request->height !== $barangay_resident->height) {
             $updates['height'] = $request->height; // Assumes height field exists
         }
-    
+
         if ($request->has('weight') && $request->weight !== $barangay_resident->weight) {
             $updates['weight'] = $request->weight; // Assumes weight field exists
         }
-    
+
         if ($request->has('religion') && $request->religion !== $barangay_resident->religion) {
             $updates['religion'] = $request->religion; // Assumes religion field exists
         }
-    
+
         if ($request->has('voter') && $request->voter !== $barangay_resident->voter) {
             $updates['voter'] = $request->voter; // Assumes voter field exists
         }
-    
+
         if ($request->has('four_ps') && $request->four_ps !== $barangay_resident->four_ps) {
             $updates['four_ps'] = $request->four_ps; // Assumes four_ps field exists
         }
-    
+
         if ($request->has('pwd') && $request->pwd !== $barangay_resident->pwd) {
             $updates['pwd'] = $request->pwd; // Assumes pwd field exists
         }
-    
+
         if ($request->has('elementary') && $request->elementary !== $barangay_resident->elementary) {
             $updates['elementary'] = $request->elementary;
         }
@@ -223,7 +223,7 @@ class BarangayResidentController extends Controller
         if ($request->has('college') && $request->college !== $barangay_resident->college) {
             $updates['college'] = $request->college;
         }
-    
+
         // Handle Employer Rows
         if ($request->has('employerRows')) {
             foreach ($request->employerRows as $employerRow) {
@@ -245,7 +245,7 @@ class BarangayResidentController extends Controller
                 }
             }
         }
-    
+
         // Handle Family Rows
         if ($request->has('familyRows')) {
             foreach ($request->familyRows as $familyRow) {
@@ -267,7 +267,7 @@ class BarangayResidentController extends Controller
                 }
             }
         }
-    
+
         // Password Update Logic
         if ($request->has('password')) {
             $newPassword = $request->password;
@@ -275,15 +275,15 @@ class BarangayResidentController extends Controller
                 $updates['password'] = Hash::make($newPassword);
             }
         }
-    
+
         // Apply updates
         if (!empty($updates)) {
             $barangay_resident->update($updates);
         }
-    
+
         return new BarangayResidentResource($barangay_resident);
     }
-    
+
 
     public function resident_change_password(Request $request) {
         $barangay_resident = BarangayResident::findOrFail($request->id);
@@ -381,6 +381,11 @@ class BarangayResidentController extends Controller
 
     public function get_forecast(Request $request)
     {
+        // Get parameters from request or set defaults
+        $startYear = $request->input('start_year', 2020); // Default to 2020 if not provided
+        $endYear = $request->input('end_year', 2025); // Default to 2025 if not provided
+        $growthRate = $request->input('growth_rate', 0.2); // Default growth rate of 20% if not provided
+
         // Group by year for population count
         $populationCount = BarangayResident::selectRaw('YEAR(created_at) as year, COUNT(*) as count')
             ->groupBy('year')
@@ -397,47 +402,56 @@ class BarangayResidentController extends Controller
         $populationData = $populationCount->pluck('count', 'year')->toArray();
 
         // Prepare employment data
-        $finalEmployment = [];
+        $employmentData = [];
         foreach ($employmentCount as $record) {
-            if (!isset($finalEmployment[$record->year])) {
-                $finalEmployment[$record->year] = ['employed' => 0, 'unemployed' => 0];
+            $year = $record->year;
+            $employmentStatus = strtolower($record->employed);
+
+            if (!isset($employmentData[$year])) {
+                $employmentData[$year] = ['employed' => 0, 'unemployed' => 0];
             }
-            // Adjusted condition to check for "Yes" and "No"
-            if ($record->employed === 'Yes') {
-                $finalEmployment[$record->year]['employed'] += $record->count;
+
+            if ($employmentStatus === 'yes') {
+                $employmentData[$year]['employed'] += $record->count;
             } else {
-                $finalEmployment[$record->year]['unemployed'] += $record->count;
+                $employmentData[$year]['unemployed'] += $record->count;
             }
         }
 
-        // Full year range for 2020 to 2025
-        $fullYearRange = range(2020, 2025);
-        
+        // Full year range based on parameters
+        $fullYearRange = range($startYear, $endYear);
+
         // Initialize final data arrays
         $finalPopulation = [];
         $finalEmploymentData = [];
 
         foreach ($fullYearRange as $year) {
-            $finalPopulation[$year] = isset($populationData[$year]) ? $populationData[$year] : 0;
-            $finalEmploymentData[$year] = isset($finalEmployment[$year]) 
-                ? $finalEmployment[$year] 
-                : ['employed' => 0, 'unemployed' => 0];
+            $finalPopulation[$year] = $populationData[$year] ?? 0;
+            $finalEmploymentData[$year] = $employmentData[$year] ?? ['employed' => 0, 'unemployed' => 0];
         }
 
-        // Forecast for 2025
-        $lastYear = max(array_keys($finalPopulation));
-        $forecastedPopulationCount = $finalPopulation[$lastYear - 1] + (0.2 * $finalPopulation[$lastYear - 1]);
-        
-        // For employment, we will use the last year employed count for forecasting
-        $forecastedEmployedCount = $finalEmploymentData[$lastYear - 1]['employed'] + (0.2 * $finalEmploymentData[$lastYear - 1]['employed']);
-        $forecastedUnemployedCount = $finalEmploymentData[$lastYear - 1]['unemployed'] + (0.2 * $finalEmploymentData[$lastYear - 1]['unemployed']);
+        // Get the most recent year with data for forecasting
+        $lastYearWithData = max(array_keys(array_filter($finalPopulation, fn($count) => $count > 0)));
+        $forecastedYear = $lastYearWithData + 1;
 
-        // Add forecasted values for 2025
-        $finalPopulation[2025] = round($forecastedPopulationCount);
-        $finalEmploymentData[2025] = [
-            'employed' => round($forecastedEmployedCount),
-            'unemployed' => round($forecastedUnemployedCount)
-        ];
+        // Forecast population based on the growth rate if we have data for the last year
+        if (isset($finalPopulation[$lastYearWithData])) {
+            $forecastedPopulationCount = $finalPopulation[$lastYearWithData] + ($growthRate * $finalPopulation[$lastYearWithData]);
+            $finalPopulation[$forecastedYear] = round($forecastedPopulationCount);
+
+            // Forecast employment based on the last year's data and the growth rate
+            $forecastedEmployedCount = $finalEmploymentData[$lastYearWithData]['employed'] + ($growthRate * $finalEmploymentData[$lastYearWithData]['employed']);
+            $forecastedUnemployedCount = $finalEmploymentData[$lastYearWithData]['unemployed'] + ($growthRate * $finalEmploymentData[$lastYearWithData]['unemployed']);
+
+            $finalEmploymentData[$forecastedYear] = [
+                'employed' => round($forecastedEmployedCount),
+                'unemployed' => round($forecastedUnemployedCount)
+            ];
+        } else {
+            // If no data is sufficient for forecasting, set the next year's values to zero or reasonable defaults
+            $finalPopulation[$forecastedYear] = 0;
+            $finalEmploymentData[$forecastedYear] = ['employed' => 0, 'unemployed' => 0];
+        }
 
         // Format the response
         $formattedResponse = [
@@ -453,15 +467,18 @@ class BarangayResidentController extends Controller
         }
 
         foreach ($finalEmploymentData as $year => $data) {
+            $employmentRate = ($data['employed'] + $data['unemployed']) > 0
+                ? round(($data['employed'] / ($data['employed'] + $data['unemployed'])) * 100, 2)
+                : 0;
+
             $formattedResponse['employment'][] = [
                 'year' => $year,
                 'employed' => $data['employed'],
-                'unemployed' => $data['unemployed']
+                'unemployed' => $data['unemployed'],
+                'employment_rate' => $employmentRate // Employment rate as a percentage
             ];
         }
 
         return response()->json($formattedResponse);
     }
-
-
 }

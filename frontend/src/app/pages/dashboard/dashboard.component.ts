@@ -336,23 +336,42 @@ export class DashboardComponent {
 			],
 		};
 	}
-
+	
 	initializePopulationChart(data: any) {
-		let population: any[] = [];
-		let employed: any[] = [];
-		let unemployed: any[] = [];
-		let monthNames: string[] = [];
+		let population: number[] = [];
+		let employed: number[] = [];
+		let unemployed: number[] = [];
+		let yearLabels: string[] = [];
+	
+		// Loop through the population data and extract counts and years
 		for (let i = 0; i < data.population.length; i++) {
 			population.push(data.population[i].count);
-			monthNames.push(data.population[i].year);
+			yearLabels.push(data.population[i].year);
 		}
-
+	
+		// Loop through the employment data and extract employed and unemployed counts
+		for (let i = 0; i < data.employment.length; i++) {
+			employed.push(data.employment[i].employed);
+			unemployed.push(data.employment[i].unemployed);
+		}
+	
+		// Configure the chart with multiple series for Population, Employed, and Unemployed
 		this.populationOverviewChart = {
 			series: [
 				{
 					name: 'Population',
 					data: population,
 					color: '#49BEFF',
+				},
+				{
+					name: 'Employed',
+					data: employed,
+					color: '#00C49A', // Green for employed
+				},
+				{
+					name: 'Unemployed',
+					data: unemployed,
+					color: '#FF5733', // Red for unemployed
 				}
 			],
 			chart: {
@@ -369,7 +388,7 @@ export class DashboardComponent {
 				curve: 'straight'
 			},
 			title: {
-				text: 'Product Trends by Month',
+				text: 'Population and Employment Trends by Year',
 				align: 'left'
 			},
 			grid: {
@@ -379,10 +398,16 @@ export class DashboardComponent {
 				},
 			},
 			xaxis: {
-				categories: monthNames,
+				categories: yearLabels,
+			},
+			yaxis: {
+				title: {
+					text: 'Counts'
+				}
 			}
 		};
 	}
+	
 
 	initializeCertificateRequestsChart() {
 		let series: any[] = [];
