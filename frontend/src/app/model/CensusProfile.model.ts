@@ -1,42 +1,13 @@
 export interface CensusProfile {
     id: number;
-    first_name: string;
-    middle_name?: string | null;
-    last_name: string;
-    address?: string;
-    ownership: string;
-    provincial_address?: string;
-    length_of_stay: string;
-    gender?: string;
-    civil_status?: string;
-    birthdate?: Date;
-    place_of_birth?: string;
-    contact_number?: string;
-    height?: string;
-    weight?: string;
-    religion?: string;
-    email: string;
-    voter: boolean;
-    four_ps: boolean;
-    pwd: boolean;
+    date_of_reinterview?: Date | string; // Optional field if date is nullable
+    respondent_name: string; // Corresponds to the respondent's name
+    respondent_address: string; // Address of the respondent
+    total_members: number; // Total number of members in the household
+    male_members: number; // Total number of male members in the household
+    female_members: number; // Total number of female members in the household
 
-    elementary?: string;
-    elementary_address?: string;
-
-    high_school?: string;
-    high_school_address?: string;
-
-    vocational?: string;
-    vocational_address?: string;
-
-    college?: string;
-    college_address?: string;
-
-    employerRows: any[];
-    familyRows: any[];
-
-    createdAt?: Date;
-    updatedAt?: Date;
-    deletedAt?: Date;
-
+    // Additional fields specific to census profiles if needed
+    createdAt?: Date; // Creation date of the record
+    updatedAt?: Date; // Last updated date of the record
 }

@@ -1,55 +1,62 @@
 <div class="row">
-	<div class="col-md-12">
-		<div class="card">
-			<div class="card-header">
-				<h4 class="card-title">Census </h4>
-				<button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold m-1 ms-auto d-flex justify-content-end" (click)="addCensusProfile()" *ngIf="userRole ==='admin'">Add Census Profile</button>
-			</div>
-			<div class="card-body">
-				<!-- Add this input field for search -->
-				<input type="text" class="form-control mb-2" placeholder="Search" [(ngModel)]="searchQuery" (input)="search()">
-				<div class="table-responsive">
-					<table class="table">
-						<thead class="text-primary">
-							<th>
-								Last Name
-							</th>
-							<th>
-								First Name
-							</th>
-							<th>
-								Middle Name
-							</th>
-							<th>
-								&nbsp;
-							</th>
-						</thead>
-						<tbody>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h4 class="card-title">Census Profiles</h4>
+                <button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold ms-auto" 
+                        (click)="addCensusProfile()" *ngIf="userRole === 'admin'">Add Census Profile</button>
+            </div>
+            <div class="card-body">
+                <!-- Search Input -->
+                <input type="text" class="form-control mb-2" placeholder="Search by Respondent Name" 
+                       [(ngModel)]="searchQuery" (input)="search()">
+
+                <!-- Table for Census Profiles -->
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="text-primary">
+                            <tr>
+                                <th>Respondent Name</th>
+                                <th>Address</th>
+                                <th>Total Members</th>
+                                <th>Male Members</th>
+                                <th>Female Members</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 							<tr *ngFor="let census of paginatedCensus">
-								<td>{{ census.last_name }}</td>
-								<td>{{ census.first_name }}</td>
-								<td>{{ census.middle_name }}</td>
-								<td>{{ census.email }}</td>
+								<td>{{ census.respondent_name || 'N/A' }}</td>
+								<td>{{ census.respondent_address || 'N/A' }}</td>
+								<td>{{ census.total_members || 'N/A' }}</td>
+								<td>{{ census.male_members || 'N/A' }}</td>
+								<td>{{ census.female_members || 'N/A' }}</td>
 								<td>
-									<button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold m-1" (click)="view(census)">View</button>
-									<button type="button" class="btn btn-danger btn-rounded btn-sm fw-bold m-1" (click)="delete(census.id)" *ngIf="userRole ==='admin'">Delete</button>
+									<button type="button" class="btn btn-primary btn-rounded btn-sm fw-bold m-1" 
+											(click)="view(census)">View</button>
+									<button type="button" class="btn btn-danger btn-rounded btn-sm fw-bold m-1" 
+											(click)="delete(census.id)" *ngIf="userRole === 'admin'">Delete</button>
 								</td>
 							</tr>
 							<tr *ngIf="paginatedCensus.length == 0">
-								<td colspan="5">NO DATA</td>
+								<td colspan="6" class="text-center">NO DATA</td>
 							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="pagination d-flex justify-content-end">
-					<button class="btn btn-primary btn-sm" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Previous</button>
-					<ng-container *ngFor="let page of visiblePages()">
-						<button class="btn btn-primary btn-sm" [class.active]="currentPage === page" (click)="goToPage(page)">{{ page }}</button>
-					</ng-container>
-					<button class="btn btn-primary btn-sm" [disabled]="currentPage === totalPages()" (click)="goToPage(currentPage + 1)">Next</button>
-				</div>				
-			</div>
-		</div>
-	</div>
+						</tbody>						
+                    </table>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="pagination d-flex justify-content-end">
+                    <button class="btn btn-primary btn-sm" [disabled]="currentPage === 1" 
+                            (click)="goToPage(currentPage - 1)">Previous</button>
+                    <ng-container *ngFor="let page of visiblePages()">
+                        <button class="btn btn-primary btn-sm" [class.active]="currentPage === page" 
+                                (click)="goToPage(page)">{{ page }}</button>
+                    </ng-container>
+                    <button class="btn btn-primary btn-sm" [disabled]="currentPage === totalPages()" 
+                            (click)="goToPage(currentPage + 1)">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<!-- <app-confirmation-dialog></app-confirmation-dialog> -->

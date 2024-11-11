@@ -17,8 +17,10 @@ class CensusProfileController extends Controller
     {
         try {
             $censusProfiles = CensusProfile::with('householdMembers')->get();
+            \Log::info('Census Profiles:', $censusProfiles->toArray()); // Log data for debugging
             return response()->json($censusProfiles, 200);
         } catch (\Exception $e) {
+            \Log::error('Failed to retrieve census profiles:', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'Failed to retrieve census profiles', 'details' => $e->getMessage()], 500);
         }
     }
