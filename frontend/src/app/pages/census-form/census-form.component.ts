@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CensusService } from '../../services/census.service';
 
 @Component({
@@ -9,22 +10,34 @@ import { CensusService } from '../../services/census.service';
 })
 export class CensusFormComponent implements OnInit {
     profileForm: FormGroup;
+    profileId: number | null = null;
 
-    constructor(private formBuilder: FormBuilder, private censusService: CensusService) {
+    constructor(
+        private formBuilder: FormBuilder,
+        private censusService: CensusService,
+        private route: ActivatedRoute,
+        private router: Router
+    ) {
         this.profileForm = this.formBuilder.group({
-            date_of_reinterview: '2024-01-01',
-            respondent_name: ['John Doe', Validators.required],
-            respondent_address: ['123 Main St', Validators.required],
-            total_members: ['5', Validators.required],
-            male_members: ['2', Validators.required],
-            female_members: ['3', Validators.required],
+            date_of_reinterview: [''],
+            respondent_name: ['', Validators.required],
+            respondent_address: ['', Validators.required],
+            total_members: ['', Validators.required],
+            male_members: ['', Validators.required],
+            female_members: ['', Validators.required],
             householdMembers: this.formBuilder.array([])
         });
     }
 
     ngOnInit() {
-        this.addHouseholdMember();
-        this.addHouseholdMember();
+        this.route.params.subscribe(params => {
+            this.profileId = params['id'] ? +params['id'] : null;
+            if (this.profileId) {
+                this.loadProfileData(this.profileId);
+            } else {
+                this.addHouseholdMember(); // Initialize at least one member for new form
+            }
+        });
     }
 
     get householdMembers(): FormArray {
@@ -33,15 +46,15 @@ export class CensusFormComponent implements OnInit {
 
     addHouseholdMember() {
         const memberGroup = this.formBuilder.group({
-            name: ['Jane Doe', Validators.required],
-            relationship: ['Daughter', Validators.required],
-            sex: ['Female', Validators.required],
-            dateOfBirth: ['01/2000', Validators.required],
-            age: [24, [Validators.required, Validators.min(0)]],
+            name: ['', Validators.required],
+            relationship: ['', Validators.required],
+            sex: ['', Validators.required],
+            dateOfBirth: ['', Validators.required],
+            age: [null, [Validators.required, Validators.min(0)]],
             isPWD: [false],
-            is4PsBeneficiary: [true],
-            isEmployed: [true],
-            educationalAttainment: ['Bachelor\'s Degree']
+            is4PsBeneficiary: [false],
+            isEmployed: [false],
+            educationalAttainment: ['']
         });
         this.householdMembers.push(memberGroup);
     }
@@ -50,12 +63,52 @@ export class CensusFormComponent implements OnInit {
         this.householdMembers.removeAt(index);
     }
 
+    loadProfileData(id: number) {
+        this.censusService.getCensusProfileById(id).subscribe(
+            profile => {
+                console.log('Fetched profile:', profile); // Debugging log
+                this.profileForm.patchValue({
+                    date_of_reinterview: profile.date_of_reinterview,
+                    respondent_name: profile.respondent_name,
+                    respondent_address: profile.respondent_address,
+                    total_members: profile.total_members,
+                    male_members: profile.male_members,
+                    female_members: profile.female_members
+                });
+                this.setHouseholdMembers(profile.householdMembers || []);
+            },
+            error => {
+                console.error('Error loading profile data:', error);
+                alert('Failed to load profile data');
+            }
+        );
+    }
+
+    setHouseholdMembers(members: any[]) {
+        const householdMembersArray = this.householdMembers;
+        householdMembersArray.clear(); // Clear existing members if any
+        members.forEach(member => {
+            householdMembersArray.push(this.formBuilder.group({
+                name: [member.name, Validators.required],
+                relationship: [member.relationship, Validators.required],
+                sex: [member.sex, Validators.required],
+                dateOfBirth: [member.date_of_birth, Validators.required],
+                age: [member.age, [Validators.required, Validators.min(0)]],
+                isPWD: [member.is_pwd],
+                is4PsBeneficiary: [member.is_4ps_beneficiary],
+                isEmployed: [member.is_employed],
+                educationalAttainment: [member.educational_attainment]
+            }));
+        });
+    }
+
     onSubmit() {
         if (this.profileForm.valid) {
             this.censusService.saveCensusProfile(this.profileForm.value).subscribe(
                 response => {
                     console.log(response.message);
                     alert('Census profile saved successfully');
+                    this.router.navigate(['/app/census']);
                 },
                 error => {
                     console.error('Error saving profile:', error);

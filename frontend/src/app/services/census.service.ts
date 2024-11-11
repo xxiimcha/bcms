@@ -59,6 +59,11 @@ export class CensusService {
         return this.http.get<CensusProfile>(`${this.apiUrl}/census-profiles/${id}`, { headers });
     }    
 
+    updateCensusProfile(id: number, data: any): Observable<any> {
+        const headers = this.getHeaders();
+        return this.http.put(`${this.apiUrl}/census-profiles/${id}`, data, { headers });
+    }
+    
     // Method to set the auth token dynamically, e.g., after login
     setAuthToken(token: string) {
         this.authToken = token;

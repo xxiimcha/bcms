@@ -35,6 +35,7 @@ class CensusProfileController extends Controller
     {
         try {
             $censusProfile = CensusProfile::with('householdMembers')->findOrFail($id);
+            \Log::info('Fetched Census Profile:', $censusProfile->toArray()); // Debug log
             return response()->json($censusProfile, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to retrieve census profile', 'details' => $e->getMessage()], 500);

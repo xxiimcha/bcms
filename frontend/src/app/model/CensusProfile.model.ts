@@ -1,13 +1,25 @@
 export interface CensusProfile {
     id: number;
-    date_of_reinterview?: Date | string; // Optional field if date is nullable
-    respondent_name: string; // Corresponds to the respondent's name
-    respondent_address: string; // Address of the respondent
-    total_members: number; // Total number of members in the household
-    male_members: number; // Total number of male members in the household
-    female_members: number; // Total number of female members in the household
+    date_of_reinterview?: Date | string;
+    respondent_name: string;
+    respondent_address: string;
+    total_members: number;
+    male_members: number;
+    female_members: number;
+    householdMembers?: HouseholdMember[];
+    createdAt?: Date;
+    updatedAt?: Date;
+}
 
-    // Additional fields specific to census profiles if needed
-    createdAt?: Date; // Creation date of the record
-    updatedAt?: Date; // Last updated date of the record
+export interface HouseholdMember {
+    id?: number;
+    name: string;
+    relationship: string;
+    sex: 'Male' | 'Female';
+    dateOfBirth: string;
+    age: number;
+    isPWD: boolean;
+    is4PsBeneficiary: boolean;
+    isEmployed: boolean;
+    educationalAttainment: string;
 }
