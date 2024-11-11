@@ -14,6 +14,7 @@ use App\Http\Controllers\BarangayDocumentController;
 use App\Http\Controllers\BarangayResidentDocumentController;
 use App\Http\Controllers\SpecialURLController;
 use App\Http\Controllers\CensusProfileController;
+use App\Http\Controllers\AnnouncementController;
 
 
 /*
@@ -39,6 +40,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/census-profiles', [CensusProfileController::class, 'index']);
     Route::get('/census-profiles/{id}', [CensusProfileController::class, 'show']);
     Route::delete('/census-profiles/{id}', [CensusProfileController::class, 'destroy']);
+
+    Route::get('/announcements', [AnnouncementController::class, 'index']);
+    Route::post('/announcements', [AnnouncementController::class, 'store']);
+    Route::get('/announcements/{id}', [AnnouncementController::class, 'show']);
+    Route::put('/announcements/{id}', [AnnouncementController::class, 'update']);
+    Route::delete('/announcements/{id}', [AnnouncementController::class, 'destroy']);
 
     Route::get('/residents', [BarangayResidentController::class, 'residents']);
     Route::get('/resident/{id}', [BarangayResidentController::class, 'resident']);

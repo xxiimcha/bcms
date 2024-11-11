@@ -1,0 +1,6 @@
+<div *ngFor="let announcement of announcements" class="announcement">
+    <h3>{{ announcement.title }}</h3>
+    <p>{{ announcement.content }}</p>
+    <small>Target Audience: {{ announcement.target_user_type }}</small>
+    <hr>
+</div>

@@ -29,40 +29,41 @@ import { BarangayOfficialsFormComponent } from '../../pages/barangay-officials-f
 import { CensusComponent } from '../../pages/census/census.component';
 import { CensusFormComponent } from '../../pages/census-form/census-form.component';
 import { CensusProfileModalComponent } from '../../pages/common/census-profile-modal/census-profile-modal.component';
+import { AnnouncementListComponent } from '../../pages/announcements/announcement-list/announcement-list.component'; // Import Announcements Component
 
 @NgModule({
-	imports: [
-		CommonModule,
-		RouterModule.forChild(AdminLayoutRoutes),
-		FormsModule,
-		NgbModule,
-		ReactiveFormsModule,
-		NgApexchartsModule,
-		EditorModule,
-		QrCodeModule,
-	],
-	declarations: [
-		DashboardComponent,
-		UserComponent,
-		TableComponent,
-		IconsComponent,
-		ProfileComponent,
-		CertificatesComponent,
-		CertificatesFormComponent,
-		FormComponent,
-		ConfirmationDialogComponent,
-		PrintModalComponent,
-		HistoryModalComponent,
-		PurposeModalComponent,
-		MultiSelectDropdownComponent,
-		QRModalComponent,
-		SettingsComponent,
-		BarangayOfficialsComponent,
-		BarangayOfficialsFormComponent,
-		CensusComponent,
-		CensusFormComponent,
-		CensusProfileModalComponent
-	]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(AdminLayoutRoutes),
+        FormsModule,
+        NgbModule,
+        ReactiveFormsModule,
+        NgApexchartsModule,
+        EditorModule,
+        QrCodeModule,
+    ],
+    declarations: [
+        DashboardComponent,
+        UserComponent,
+        TableComponent,
+        IconsComponent,
+        ProfileComponent,
+        CertificatesComponent,
+        CertificatesFormComponent,
+        FormComponent,
+        ConfirmationDialogComponent,
+        PrintModalComponent,
+        HistoryModalComponent,
+        PurposeModalComponent,
+        MultiSelectDropdownComponent,
+        QRModalComponent,
+        SettingsComponent,
+        BarangayOfficialsComponent,
+        BarangayOfficialsFormComponent,
+        CensusComponent,
+        CensusFormComponent,
+        CensusProfileModalComponent,
+        AnnouncementListComponent // Declare Announcements Component
+    ]
 })
-
 export class AdminLayoutModule { }
