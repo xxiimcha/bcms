@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\BarangayResidentResource;
 use App\Models\BarangayResident;
+use App\Models\HouseholdMember;
+use App\Models\CensusProfile;
 use App\Models\CensusProfileEmployment;
 use App\Models\CensusProfileFamily;
 use Illuminate\Support\Facades\Hash;
+use DateTime;
 
 class BarangayResidentController extends Controller
 {
@@ -304,8 +307,10 @@ class BarangayResidentController extends Controller
 
     public function getAllClassificationCounts()
     {
-        $profiles = BarangayResident::all();
+        // Fetch all profiles from the household_members table
+        $profiles = HouseholdMember::all();
 
+        // Initialize classifications with counters and empty profiles
         $classifications = [
             'children' => [
                 'ctr' => 0,
@@ -333,8 +338,10 @@ class BarangayResidentController extends Controller
             ]
         ];
 
+        // Loop through each profile and classify
         foreach ($profiles as $profile) {
-            $age = $this->calculateAge($profile->birthdate);
+            // Calculate age from date_of_birth
+            $age = $this->calculateAge($profile->date_of_birth);
 
             // Classify based on age
             if ($age < 18) {
@@ -348,35 +355,29 @@ class BarangayResidentController extends Controller
                 $classifications['senior_citizen']['profile'][] = $profile;
             }
 
-            // Count based on flags in census_profile table
-            if ($profile->indigent) {
-                $classifications['indigents']['ctr']++;
-                $classifications['indigents']['profile'][] = $profile;
-            }
-
-            if ($profile->pwd) {
+            // Classify based on flags in household_members table
+            if ($profile->is_pwd) {
                 $classifications['pwd']['ctr']++;
                 $classifications['pwd']['profile'][] = $profile;
             }
 
-            if ($profile->four_ps) {
+            if ($profile->is_4ps_beneficiary) {
                 $classifications['four_ps']['ctr']++;
                 $classifications['four_ps']['profile'][] = $profile;
             }
         }
 
+        // Return the classifications in JSON format
         return response()->json($classifications);
     }
 
-    /**
-     * Calculate age from birthdate.
-     *
-     * @param string $birthdate
-     * @return int
-     */
+    // Helper function to calculate age from date_of_birth
     private function calculateAge($birthdate)
     {
-        return now()->diffInYears($birthdate);
+        $birthDate = new DateTime($birthdate);
+        $currentDate = new DateTime();
+        $age = $birthDate->diff($currentDate)->y;
+        return $age;
     }
 
     public function get_forecast(Request $request)
