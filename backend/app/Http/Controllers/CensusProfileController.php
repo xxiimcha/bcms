@@ -2,271 +2,118 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Resources\CensusProfileResource;
 use App\Models\CensusProfile;
-use App\Models\CensusProfileEmployment;
-use App\Models\CensusProfileFamily; // Import the Family model
-use Illuminate\Support\Facades\Hash;
+use App\Models\HouseholdMember;
+use Illuminate\Http\Request;
 
 class CensusProfileController extends Controller
 {
-    public function censusProfiles(Request $request)
+    /**
+     * Display a listing of all census profiles.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index()
     {
-        $profiles = CensusProfile::all();
-        return CensusProfileResource::collection($profiles);
-    }
-
-    public function censusProfile(Request $request)
-    {
-        $censusProfile = CensusProfile::with(['employments', 'families'])->findOrFail($request->id);
-        return new CensusProfileResource($censusProfile);
-    }
-
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'address' => 'nullable|string',
-            'ownership' => 'nullable|string',
-            'provincial_address' => 'nullable|string',
-            'length_of_stay' => 'nullable|int',
-            'gender' => 'nullable|string',
-            'civil_status' => 'nullable|string',
-            'birthdate' => 'nullable|date',
-            'place_of_birth' => 'nullable|string',
-            'contact_number' => 'nullable|string',
-            'height' => 'nullable|string',
-            'weight' => 'nullable|string',
-            'religion' => 'nullable|string',
-            'email' => 'nullable|string|email',
-            'voter' => 'nullable|string',
-            'four_ps' => 'nullable|string',
-            'pwd' => 'nullable|string',
-            'elementary' => 'nullable|string',
-            'elementary_address' => 'nullable|string',
-            'high_school' => 'nullable|string',
-            'high_school_address' => 'nullable|string',
-            'vocational' => 'nullable|string',
-            'vocational_address' => 'nullable|string',
-            'college' => 'nullable|string',
-            'college_address' => 'nullable|string',
-            'password' => 'nullable|string|min:6',
-        ]);
-
-        $censusProfile = CensusProfile::create($validated);
-
-        // Hash the password if provided
-        if ($request->has('password')) {
-            $censusProfile->password = Hash::make($request->password);
-            $censusProfile->save();
+        try {
+            $censusProfiles = CensusProfile::with('householdMembers')->get();
+            return response()->json($censusProfiles, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve census profiles', 'details' => $e->getMessage()], 500);
         }
-
-        if ($request->has('employerRows')) {
-            foreach ($request->employerRows as $employerRow) {
-                $employerRow['census_id'] = $censusProfile->id; // Link to the profile
-                CensusProfileEmployment::create($employerRow);
-            }
-        }
-
-        if ($request->has('familyRows')) {
-            foreach ($request->familyRows as $familyRow) {
-                $familyRow['census_id'] = $censusProfile->id; // Link to the profile
-                CensusProfileFamily::create($familyRow);
-            }
-        }
-
-        return new CensusProfileResource($censusProfile);
-    }
-
-    public function update(Request $request)
-    {
-        $censusProfile = CensusProfile::findOrFail($request->id);
-
-        $validated = $request->validate([
-            'first_name' => 'nullable|string',
-            'last_name' => 'nullable|string',
-            'address' => 'nullable|string',
-            'ownership' => 'nullable|string',
-            'provincial_address' => 'nullable|string',
-            'length_of_stay' => 'nullable|int',
-            'gender' => 'nullable|string',
-            'civil_status' => 'nullable|string',
-            'birthdate' => 'nullable|date',
-            'place_of_birth' => 'nullable|string',
-            'contact_number' => 'nullable|string',
-            'height' => 'nullable|string',
-            'weight' => 'nullable|string',
-            'religion' => 'nullable|string',
-            'email' => 'nullable|string|email',
-            'voter' => 'nullable|string',
-            'four_ps' => 'nullable|string',
-            'pwd' => 'nullable|string',
-            'elementary' => 'nullable|string',
-            'elementary_address' => 'nullable|string',
-            'high_school' => 'nullable|string',
-            'high_school_address' => 'nullable|string',
-            'vocational' => 'nullable|string',
-            'vocational_address' => 'nullable|string',
-            'college' => 'nullable|string',
-            'college_address' => 'nullable|string',
-            'password' => 'nullable|string|min:6',
-            'employerRows' => 'nullable|array',
-            'employerRows.*.id' => 'nullable|integer|exists:census_profile_employment,id',
-            'employerRows.*.duration' => 'nullable|string',
-            'employerRows.*.employer_name' => 'nullable|string',
-            'employerRows.*.employer_address' => 'nullable|string',
-            'familyRows' => 'nullable|array',
-            'familyRows.*.id' => 'nullable|integer|exists:census_profile_family,id',
-            'familyRows.*.full_name' => 'required|string',
-            'familyRows.*.position' => 'nullable|string',
-            'peopleRows.*.age' => 'nullable|integer',
-            'peopleRows.*.birthdate' => 'nullable|date',
-            'peopleRows.*.civil_status' => 'nullable|string',
-            'familyRows.*.occupation' => 'nullable|string',
-            'deletedEmployerIds' => 'nullable|array',
-            'deletedFamilyIds' => 'nullable|array',
-        ]);
-
-        if (isset($validated['password'])) {
-            $validated['password'] = Hash::make($validated['password']);
-        }
-
-        // Update the census profile fields
-        $censusProfile->update(array_filter($validated)); // Update only the fields that are present
-
-        // Handle employerRows updates
-        if (isset($validated['employerRows'])) {
-            foreach ($validated['employerRows'] as $employerData) {
-                if (isset($employerData['id'])) {
-                    // Update existing employer
-                    $employer = CensusProfileEmployment::findOrFail($employerData['id']);
-                    $employer->update($employerData);
-                } else {
-                    // Create new employer record
-                    $censusProfile->employments()->create(array_merge($employerData, ['census_id' => $censusProfile->id]));
-                }
-            }
-        }
-
-        // Handle deletion of employer rows
-        if (isset($validated['deletedEmployerIds'])) {
-            CensusProfileEmployment::destroy($validated['deletedEmployerIds']);
-        }
-
-        // Handle familyRows updates
-        if (isset($validated['familyRows'])) {
-            foreach ($validated['familyRows'] as $familyData) {
-                if (isset($familyData['id'])) {
-                    // Update existing family member
-                    $familyMember = CensusProfileFamily::findOrFail($familyData['id']);
-                    $familyMember->update($familyData);
-                } else {
-                    // Create new family member record
-                    $censusProfile->families()->create(array_merge($familyData, ['census_id' => $censusProfile->id]));
-                }
-            }
-        }
-
-        // Handle deletion of family rows
-        if (isset($validated['deletedFamilyIds'])) {
-            CensusProfileFamily::destroy($validated['deletedFamilyIds']);
-        }
-
-        return new CensusProfileResource($censusProfile);
-    }
-
-    public function changePassword(Request $request)
-    {
-        $censusProfile = CensusProfile::findOrFail($request->id);
-
-        $validated = $request->validate([
-            'password' => 'required|string|min:6',
-        ]);
-
-        $censusProfile->update([
-            'password' => Hash::make($validated['password']),
-        ]);
-
-        return response()->json(['success' => 'Password Change Successful'], 200);
-    }
-
-    public function destroy(Request $request)
-    {
-        $censusProfile = CensusProfile::findOrFail($request->id);
-        $censusProfile->delete();
-        return response()->json(['success' => 'Profile Deleted Successfully'], 200);
-    }
-
-    public function getAllClassificationCounts()
-    {
-        $profiles = CensusProfile::all();
-
-        $classifications = [
-            'children' => [
-                'ctr' => 0,
-                'profile' => []
-            ],
-            'youth' => [
-                'ctr' => 0,
-                'profile' => []
-            ],
-            'senior_citizen' => [
-                'ctr' => 0,
-                'profile' => []
-            ],
-            'indigents' => [
-                'ctr' => 0,
-                'profile' => []
-            ],
-            'pwd' => [
-                'ctr' => 0,
-                'profile' => []
-            ],
-            'four_ps' => [
-                'ctr' => 0,
-                'profile' => []
-            ]
-        ];
-
-        foreach ($profiles as $profile) {
-            $age = $this->calculateAge($profile->birthdate);
-
-            // Classify based on age
-            if ($age < 18) {
-                $classifications['children']['ctr']++;
-            } elseif ($age < 60) {
-                $classifications['youth']['ctr']++;
-            } else {
-                $classifications['senior_citizen']['ctr']++;
-            }
-
-            // Count based on flags in census_profile table
-            if ($profile->indigent) {
-                $classifications['indigents']['ctr']++;
-            }
-
-            if ($profile->pwd) {
-                $classifications['pwd']['ctr']++;
-            }
-
-            if ($profile->four_ps) {
-                $classifications['four_ps']['ctr']++;
-            }
-        }
-
-        return response()->json($classifications);
     }
 
     /**
-     * Calculate age from birthdate.
+     * Display the specified census profile.
      *
-     * @param string $birthdate
-     * @return int
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    private function calculateAge($birthdate)
+    public function show($id)
     {
-        return now()->diffInYears($birthdate);
+        try {
+            $censusProfile = CensusProfile::with('householdMembers')->findOrFail($id);
+            return response()->json($censusProfile, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to retrieve census profile', 'details' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Store a newly created census profile along with household members in the database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'date_of_reinterview' => 'nullable|date',
+            'respondent_name' => 'required|string|max:255',
+            'respondent_address' => 'required|string|max:255',
+            'total_members' => 'required|integer',
+            'male_members' => 'required|integer',
+            'female_members' => 'required|integer',
+            'householdMembers' => 'required|array',
+            'householdMembers.*.name' => 'required|string|max:255',
+            'householdMembers.*.relationship' => 'required|string|max:255',
+            'householdMembers.*.sex' => 'required|in:Male,Female',
+            'householdMembers.*.dateOfBirth' => 'required|string',
+            'householdMembers.*.age' => 'required|integer|min:0',
+            'householdMembers.*.isPWD' => 'nullable|boolean',
+            'householdMembers.*.is4PsBeneficiary' => 'nullable|boolean',
+            'householdMembers.*.isEmployed' => 'nullable|boolean',
+            'householdMembers.*.educationalAttainment' => 'nullable|string|max:255',
+        ]);
+
+        try {
+            // Create the census profile
+            $censusProfile = CensusProfile::create([
+                'date_of_reinterview' => $request->date_of_reinterview,
+                'respondent_name' => $request->respondent_name,
+                'respondent_address' => $request->respondent_address,
+                'total_members' => $request->total_members,
+                'male_members' => $request->male_members,
+                'female_members' => $request->female_members,
+            ]);
+
+            // Loop through each household member and save them
+            foreach ($request->householdMembers as $memberData) {
+                $censusProfile->householdMembers()->create([
+                    'name' => $memberData['name'],
+                    'relationship' => $memberData['relationship'],
+                    'sex' => $memberData['sex'],
+                    'date_of_birth' => $memberData['dateOfBirth'],
+                    'age' => $memberData['age'],
+                    'is_pwd' => $memberData['isPWD'] ?? false,
+                    'is_4ps_beneficiary' => $memberData['is4PsBeneficiary'] ?? false,
+                    'is_employed' => $memberData['isEmployed'] ?? null,
+                    'educational_attainment' => $memberData['educationalAttainment'] ?? null,
+                ]);
+            }
+
+            return response()->json(['message' => 'Census profile saved successfully'], 201);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to save the census profile', 'details' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Remove the specified census profile from the database.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy($id)
+    {
+        try {
+            $censusProfile = CensusProfile::findOrFail($id);
+            $censusProfile->delete();
+
+            return response()->json(['message' => 'Census profile deleted successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete census profile', 'details' => $e->getMessage()], 500);
+        }
     }
 }

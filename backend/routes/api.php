@@ -35,6 +35,11 @@ Route::get('open-in-desktop', [SpecialURLController::class, 'open_in_desktop']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    Route::post('/census-profiles', [CensusProfileController::class, 'store']);
+    Route::get('/census-profiles', [CensusProfileController::class, 'index']);
+    Route::get('/census-profiles/{id}', [CensusProfileController::class, 'show']);
+    Route::delete('/census-profiles/{id}', [CensusProfileController::class, 'destroy']);
+
     Route::get('/residents', [BarangayResidentController::class, 'residents']);
     Route::get('/resident/{id}', [BarangayResidentController::class, 'resident']);
     Route::post('/resident', [BarangayResidentController::class, 'store']);
@@ -61,11 +66,4 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/resident-document/{id}', [BarangayResidentDocumentController::class, 'barangay_documents_resident']);
     Route::post('/resident-document', [BarangayResidentDocumentController::class, 'store']);
     Route::get('/resident-document-history/{id}', [BarangayResidentDocumentController::class, 'barangay_documents_resident_history']);
-
-    Route::get('/censuses', [CensusProfileController::class, 'censusProfiles']);
-    Route::get('/census/{id}', [CensusProfileController::class, 'censusProfile']);
-    Route::post('/census', [CensusProfileController::class, 'store']);
-    Route::patch('/census', [CensusProfileController::class, 'update']);
-    Route::delete('/census/{id}', [CensusProfileController::class, 'destroy']);
-    Route::post('/census/change-password', [CensusProfileController::class, 'changePassword']);
 });

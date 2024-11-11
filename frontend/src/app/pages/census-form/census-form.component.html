@@ -2,413 +2,88 @@
 	<div class="col-md-12">
 		<div class="card">
 			<div class="card-header">
-				<h4 class="card-title">Census Form </h4>
+				<h4 class="card-title">Census Form</h4>
 			</div>
 			<div class="card-body">
 				<form [formGroup]="profileForm">
-					<div class="p-3 form-group">
-						<div class="row">
-							<div class="col-4">
-								<div>
-									<label
-										[ngClass]="{'text-danger': profileForm.get('first_name')?.touched && profileForm.get('first_name')?.invalid}">First
-										Name</label>
-									<input type="text" formControlName="first_name" class="form-control"
-										[ngClass]="{'is-invalid': profileForm.get('first_name')?.touched && profileForm.get('first_name')?.invalid}">
-									<div *ngIf="profileForm.get('first_name')!.hasError('required')"
-										class="invalid-feedback">
-										This field is required
-									</div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div>
-									<label for="text" class="form-label">Middle Name</label>
-									<input type="text" formControlName="middle_name" class="form-control">
-								</div>
-							</div>
-							<div class="col-4">
-								<div>
-									<label
-										[ngClass]="{'text-danger': profileForm.get('last_name')?.touched && profileForm.get('last_name')?.invalid}">Last
-										Name</label>
-									<input type="text" formControlName="last_name" class="form-control"
-										[ngClass]="{'is-invalid': profileForm.get('last_name')?.touched && profileForm.get('last_name')?.invalid}">
-									<div *ngIf="profileForm.get('last_name')!.hasError('required')"
-										class="invalid-feedback">
-										This field is required
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12">
-								<div>
-									<label for="text" class="form-label">Present Address</label>
-									<textarea formControlName="address" class="form-control"></textarea>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-6">
-								<div>
-									<label class="form-label">Ownership Type</label>
-									<div class="d-flex flex-row">
-										<!-- Home Radio Button -->
-										<div class="form-check me-3">
-											<input class="form-check-input" type="radio" id="home"
-												formControlName="ownership" value="home"
-												[checked]="profileForm.get('ownership')?.value === 'home'">
-											<label class="form-check-label" for="home">
-												Home
-											</label>
-										</div>
-										<!-- Rented Radio Button -->
-										<div class="form-check">
-											<input class="form-check-input" type="radio" id="rented"
-												formControlName="ownership" value="rented"
-												[checked]="profileForm.get('ownership')?.value === 'rented'">
-											<label class="form-check-label" for="rented">
-												Rented
-											</label>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div>
-									<label class="form-label">Length of Stay</label>
-									<input type="number" formControlName="length_of_stay" class="form-control">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12">
-								<div>
-									<label for="text" class="form-label">Provincial Address</label>
-									<textarea formControlName="provincial_address" class="form-control"></textarea>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-6">
-								<div>
-									<label class="form-label">Sex</label>
-									<div class="d-flex flex-row">
-										<!-- Home Radio Button -->
-										<div class="form-check me-3">
-											<input class="form-check-input" type="radio" id="male"
-												formControlName="gender" value="Male"
-												[checked]="profileForm.get('gender')?.value === 'Male'">
-											<label class="form-check-label" for="male">
-												Male
-											</label>
-										</div>
-										<!-- Rented Radio Button -->
-										<div class="form-check">
-											<input class="form-check-input" type="radio" id="female"
-												formControlName="gender" value="Female"
-												[checked]="profileForm.get('gender')?.value === 'Female'">
-											<label class="form-check-label" for="female">
-												Female
-											</label>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-6">
-								<div>
-									<label class="form-label">Civil Status</label>
-									<div class="d-flex flex-row">
-										<!-- Home Radio Button -->
-										<div class="form-check me-3">
-											<input class="form-check-input" type="radio" id="single"
-												formControlName="civil_status" value="Male"
-												[checked]="profileForm.get('civil_status')?.value === 'Single'">
-											<label class="form-check-label" for="single">
-												Single
-											</label>
-										</div>
-										<!-- Rented Radio Button -->
-										<div class="form-check">
-											<input class="form-check-input" type="radio" id="married"
-												formControlName="civil_status" value="Married"
-												[checked]="profileForm.get('civil_status')?.value === 'Married'">
-											<label class="form-check-label" for="married">
-												Married
-											</label>
-										</div>
-										<div class="form-check">
-											<input class="form-check-input" type="radio" id="widows"
-												formControlName="civil_status" value="Widow"
-												[checked]="profileForm.get('civil_status')?.value === 'Widow'">
-											<label class="form-check-label" for="widows">
-												Widow/er
-											</label>
-										</div>
-										<div class="form-check">
-											<input class="form-check-input" type="radio" id="separated"
-												formControlName="civil_status" value="Separated"
-												[checked]="profileForm.get('civil_status')?.value === 'Separated'">
-											<label class="form-check-label" for="separated">
-												Separated
-											</label>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-4">
-								<div>
-									<label
-										[ngClass]="{'text-danger': profileForm.get('birthdate')?.touched && profileForm.get('birthdate')?.invalid}">Birth
-										Date</label>
-									<input type="date" formControlName="birthdate" class="form-control"
-										[ngClass]="{'is-invalid': profileForm.get('birthdate')?.touched && profileForm.get('birthdate')?.invalid}">
-									<div *ngIf="profileForm.get('birthdate')!.hasError('required')"
-										class="invalid-feedback">
-										This field is required
-									</div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div>
-									<label for="place_of_birth" class="form-label">Place of Birth</label>
-									<input type="text" formControlName="place_of_birth" class="form-control">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-3">
-								<div>
-									<label for="height" class="form-label">Height</label>
-									<input type="text" formControlName="height" class="form-control">
-								</div>
-							</div>
-							<div class="col-3">
-								<div>
-									<label for="weight" class="form-label">Weight</label>
-									<input type="text" formControlName="weight" class="form-control">
-								</div>
-							</div>
-							<div class="col-4">
-								<div>
-									<label for="contact_number" class="form-label">Contact Number</label>
-									<input type="text" formControlName="contact_number" class="form-control">
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-4">
-								<div>
-									<label for="religion" class="form-label">Religion</label>
-									<input type="text" formControlName="religion" class="form-control">
-								</div>
-							</div>
-							<div class="col-4">
-								<div>
-									<label
-										[ngClass]="{'text-danger': profileForm.get('email')?.touched && profileForm.get('email')!.invalid, 'text-success': profileForm.get('email')?.touched && profileForm.get('email')!.valid}">Email</label>
-									<input type="email" formControlName="email" class="form-control"
-										[ngClass]="{'is-invalid': profileForm.get('email')!.touched && profileForm.get('email')!.invalid, 'is-valid': profileForm.get('email')!.touched && profileForm.get('email')!.valid}">
-									<div *ngIf="profileForm.get('email')!.touched && profileForm.get('email')!.invalid"
-										class="invalid-feedback">Please enter a valid email address</div>
-									<div *ngIf="profileForm.get('email')!.hasError('required') && profileForm.get('email')!.touched"
-										class="invalid-feedback">This field is required</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-4">
-								<div>
-									<label class="form-label">Voters</label>
-									<div class="d-flex flex-row">
-										<!-- Home Radio Button -->
-										<div class="form-check me-3">
-											<input class="form-check-input" type="radio" id="yes"
-												formControlName="voter" value="Yes"
-												[checked]="profileForm.get('voter')?.value === 'Yes'">
-											<label class="form-check-label" for="yes">
-												Yes
-											</label>
-										</div>
-										<!-- Rented Radio Button -->
-										<div class="form-check">
-											<input class="form-check-input" type="radio" id="no" formControlName="voter"
-												value="No" [checked]="profileForm.get('voter')?.value === 'No'">
-											<label class="form-check-label" for="no">
-												No
-											</label>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div>
-									<label class="form-label">4Ps</label>
-									<div class="d-flex flex-row">
-										<!-- Home Radio Button -->
-										<div class="form-check me-3">
-											<input class="form-check-input" type="radio" id="yes"
-												formControlName="four_ps" value="Yes"
-												[checked]="profileForm.get('four_ps')?.value === 'Yes'">
-											<label class="form-check-label" for="yes">
-												Yes
-											</label>
-										</div>
-										<!-- Rented Radio Button -->
-										<div class="form-check">
-											<input class="form-check-input" type="radio" id="no"
-												formControlName="four_ps" value="No"
-												[checked]="profileForm.get('four_ps')?.value === 'No'">
-											<label class="form-check-label" for="no">
-												No
-											</label>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-4">
-								<div>
-									<label class="form-label">PWD</label>
-									<div class="d-flex flex-row">
-										<!-- Home Radio Button -->
-										<div class="form-check me-3">
-											<input class="form-check-input" type="radio" id="yes" formControlName="pwd"
-												value="Yes" [checked]="profileForm.get('pwd')?.value === 'Yes'">
-											<label class="form-check-label" for="yes">
-												Yes
-											</label>
-										</div>
-										<!-- Rented Radio Button -->
-										<div class="form-check">
-											<input class="form-check-input" type="radio" id="no" formControlName="pwd"
-												value="No" [checked]="profileForm.get('pwd')?.value === 'No'">
-											<label class="form-check-label" for="no">
-												No
-											</label>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12">
-								<div>
-									<h3>Level of Education</h3>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-6">
-								<label for="elementary" class="form-label">Elementary School</label>
-								<input type="text" formControlName="elementary" class="form-control">
-							</div>
-							<div class="col-6">
-								<label for="high_school" class="form-label">High School</label>
-								<input type="text" formControlName="high_school" class="form-control">
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-6">
-								<label for="vocational" class="form-label">Vocational School</label>
-								<input type="text" formControlName="vocational" class="form-control">
-							</div>
-							<div class="col-6">
-								<label for="college" class="form-label">College</label>
-								<input type="text" formControlName="college" class="form-control">
-							</div>
-						</div>
-						<div class="row" *ngIf="profileForm.get('employed')?.value === 'Yes'">
-							<div class="col-12">
-								<div>
-									<h3>Employer Record</h3>
-								</div>
-							</div>
-						</div>
-						<div class="row" *ngIf="profileForm.get('employed')?.value === 'Yes'">
-							<div class="col-12">
-								<div formArrayName="employerRows">
-									<div class="row" *ngFor="let row of employerRows.controls; let i = index"
-										[formGroupName]="i">
-										<div class="col-2">
-											<label for="duration" class="form-label">Duration</label>
-											<input type="text" class="form-control" formControlName="duration">
-										</div>
-										<div class="col-2">
-											<label for="employer_name" class="form-label">Company Name</label>
-											<input type="text" class="form-control" formControlName="employer_name">
-										</div>
-										<div class="col-4">
-											<label for="employer_address" class="form-label">Company Address</label>
-											<input type="text" class="form-control" formControlName="employer_address">
-										</div>
-										<div class="col-2">
-											<label for="monthly_salary" class="form-label">Monthly Salary</label>
-											<input type="text" class="form-control" formControlName="monthly_salary">
-										</div>
-										<div class="col-2">
-											<button class="btn btn-danger" (click)="removeEmployerRow(i)"> - </button>
-											<button class="btn btn-primary" (click)="addEmployerRow()"> + </button>
-										</div>
-									</div>
-								</div>
+					<!-- Reinterview Record Section -->
+					<h5 class="mt-3">I. Reinterview Record</h5>
+					<div class="form-group mb-3">
+						<label>Date of Reinterview:</label>
+						<input type="date" formControlName="date_of_reinterview" class="form-control">
+					</div>
 
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12">
-								<div>
-									<h3>Other House Occupants</h3>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12">
-								<div formArrayName="familyRows" class="family-rows">
-									<div class="row" *ngFor="let familyMember of familyRows.controls; let i = index" [formGroupName]="i">
-										<div class="col-4">
-											<label>Full Name</label>
-											<input formControlName="full_name" class="form-control" placeholder="Enter full name">
-										</div>
-										<div class="col-3">
-											<label>Position</label>
-											<input formControlName="position" class="form-control" placeholder="Enter position">
-										</div>
-										<div class="col-2">
-											<label>Age</label>
-											<input formControlName="age" type="number" class="form-control" placeholder="Enter age">
-										</div>
-										<div class="col-3">
-											<label>Birthdate</label>
-											<input formControlName="birthdate" type="date" class="form-control">
-										</div>
-										<div class="col-4">
-											<label>Civil Status</label>
-											<select formControlName="civil_status" class="form-control">
-												<option value="">Select civil status</option>
-												<option value="single">Single</option>
-												<option value="married">Married</option>
-												<option value="widowed">Widowed</option>
-												<option value="divorced">Divorced</option>
-											</select>
-										</div>
-										<div class="col-4">
-											<label>Occupation</label>
-											<input formControlName="occupation" class="form-control" placeholder="Enter occupation">
-										</div>
-										<div class="col-2">
-											<button (click)="removeFamilyRow(i)" class="btn btn-danger"> - </button>
-											<button (click)="addFamilyRow()" class="btn btn-primary"> + </button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="d-flex justify-content-end">
-							<button type="submit" class="btn btn-primary m-1" (click)="saveCensus()">Save</button>
-						</div>
+					<!-- Interview Questions Section -->
+					<h5 class="mt-4">II. Interview Questions</h5>
+					<div class="form-group mb-2">
+						<label>1. What is your name?</label>
+						<input type="text" formControlName="respondent_name" class="form-control">
+					</div>
+					<div class="form-group mb-2">
+						<label>2. What is your address?</label>
+						<input type="text" formControlName="respondent_address" class="form-control">
+					</div>
+
+					<!-- Household Members Section -->
+					<h5 class="mt-4">III. Household Members</h5>
+					<p>6. How many members are there in your household as of May 1, 2020?</p>
+					<div class="form-group mb-3 d-flex align-items-center">
+						<label class="me-2">Total:</label>
+						<input type="text" formControlName="total_members" class="form-control me-2 w-auto">
+						<label class="me-2">Male:</label>
+						<input type="text" formControlName="male_members" class="form-control me-2 w-auto">
+						<label class="me-2">Female:</label>
+						<input type="text" formControlName="female_members" class="form-control w-auto">
+					</div>
+
+					<table class="table table-bordered text-center mt-4">
+						<thead>
+							<tr>
+								<th>LINE NUMBER</th>
+								<th>NAME</th>
+								<th>RELATIONSHIP TO THE HOUSEHOLD HEAD</th>
+								<th>SEX</th>
+								<th>DATE OF BIRTH (MM/YYYY)</th>
+								<th>AGE</th>
+								<th>Is PWD</th>
+								<th>4Ps Beneficiary</th>
+								<th>Is Employed</th>
+								<th>Educational Attainment</th>
+								<th>ACTION</th>
+							</tr>
+						</thead>
+						<tbody formArrayName="householdMembers">
+							<tr *ngFor="let member of householdMembers.controls; let i = index" [formGroupName]="i">
+								<td>{{ i + 1 }}</td>
+								<td><input type="text" formControlName="name" class="form-control" placeholder="Full Name"></td>
+								<td><input type="text" formControlName="relationship" class="form-control" placeholder="Relationship to Head"></td>
+								<td>
+									<select formControlName="sex" class="form-control">
+										<option value="Male">Male</option>
+										<option value="Female">Female</option>
+									</select>
+								</td>
+								<td><input type="text" formControlName="dateOfBirth" class="form-control" placeholder="MM/YYYY"></td>
+								<td><input type="number" formControlName="age" class="form-control" placeholder="Age"></td>
+								<td><input type="checkbox" formControlName="isPWD"></td>
+								<td><input type="checkbox" formControlName="is4PsBeneficiary"></td>
+								<td><input type="checkbox" formControlName="isEmployed"></td>
+								<td><input type="text" formControlName="educationalAttainment" class="form-control" placeholder="Educational Attainment"></td>
+								<td>
+									<button type="button" class="btn btn-danger btn-sm" (click)="removeHouseholdMember(i)">Remove</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>									
+					
+					<!-- Add Household Member Button -->
+					<div class="d-flex justify-content-end mb-3">
+						<button type="button" class="btn btn-secondary" (click)="addHouseholdMember()">Add Household Member</button>
+					</div>
+
+					<!-- Submit Button -->
+					<div class="d-flex justify-content-end mt-4">
+						<button type="submit" class="btn btn-primary" (click)="onSubmit()">Save</button>
 					</div>
 				</form>
 			</div>

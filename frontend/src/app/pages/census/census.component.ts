@@ -81,6 +81,7 @@ export class CensusComponent implements OnInit {
             }
         });
     }
+    
 
     get paginatedCensus() {
         const startIndex = (this.currentPage - 1) * this.itemsPerPage;
