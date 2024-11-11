@@ -10,7 +10,7 @@ import { BarangayOfficialsComponent } from '../../pages/barangay-officials/baran
 import { BarangayOfficialsFormComponent } from '../../pages/barangay-officials-form/barangay-officials-form.component';
 import { CensusComponent } from '../../pages/census/census.component';
 import { CensusFormComponent } from '../../pages/census-form/census-form.component';
-import { AnnouncementListComponent } from '../../pages/announcements/announcement-list/announcement-list.component'; // Import Announcements Component
+import { AnnouncementsComponent } from '../../pages/announcements/announcements.component';
 
 export const AdminLayoutRoutes: Routes = [
     {
@@ -65,9 +65,12 @@ export const AdminLayoutRoutes: Routes = [
         path: 'brgy-official/form', 
         component: BarangayOfficialsFormComponent
     },
-    { path: 'announcements', component: AnnouncementListComponent },
     {
         path: 'profile',
         component: ProfileComponent
+    },
+    { 
+        path: 'announcements', 
+        component: AnnouncementsComponent 
     }
 ];

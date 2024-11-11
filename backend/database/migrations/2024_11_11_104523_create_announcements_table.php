@@ -12,10 +12,11 @@ class CreateAnnouncementsTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->string('target_user_type')->default('all'); // 'all', 'admin', 'user'
+            $table->string('target_user_type');
             $table->timestamps();
         });
     }
+
 
     public function down()
     {

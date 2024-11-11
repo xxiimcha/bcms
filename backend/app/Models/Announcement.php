@@ -1,42 +1,17 @@
 <?php
-namespace App\Http\Controllers;
 
-use App\Models\Announcement;
-use Illuminate\Http\Request;
+namespace App\Models;
 
-class AnnouncementController extends Controller
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Announcement extends Model
 {
-    public function index()
-    {
-        return Announcement::all();
-    }
+    use HasFactory;
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'target_user_type' => 'required|string|in:all,admin,user',
-        ]);
+    // Specify the fields that are mass-assignable
+    protected $fillable = ['title', 'content', 'target_user_type'];
 
-        return Announcement::create($request->all());
-    }
-
-    public function show($id)
-    {
-        return Announcement::findOrFail($id);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $announcement = Announcement::findOrFail($id);
-        $announcement->update($request->all());
-        return $announcement;
-    }
-
-    public function destroy($id)
-    {
-        Announcement::destroy($id);
-        return response()->json(['message' => 'Announcement deleted successfully']);
-    }
+    // Optionally, specify the table name if it doesn't match Laravel's naming convention
+    protected $table = 'announcements';
 }

@@ -43,8 +43,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/announcements', [AnnouncementController::class, 'index']);
     Route::post('/announcements', [AnnouncementController::class, 'store']);
-    Route::get('/announcements/{id}', [AnnouncementController::class, 'show']);
-    Route::put('/announcements/{id}', [AnnouncementController::class, 'update']);
     Route::delete('/announcements/{id}', [AnnouncementController::class, 'destroy']);
 
     Route::get('/residents', [BarangayResidentController::class, 'residents']);

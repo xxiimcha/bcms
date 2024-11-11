@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Announcement {
-    id?: number;
-    title: string;
-    content: string;
-    target_user_type: 'all' | 'admin' | 'user';
-    createdAt?: Date;
-    updatedAt?: Date;
+  id: number;
+  title: string;
+  content: string;  // Ensure this matches the field name in your database and backend
+  target_user_type: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
 @Injectable({
@@ -16,26 +16,31 @@ export interface Announcement {
 })
 export class AnnouncementService {
     private apiUrl = 'http://localhost:8000/api/announcements';
+    private authToken: string | null = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
 
     constructor(private http: HttpClient) {}
 
+    private getHeaders(): HttpHeaders {
+        return this.authToken 
+            ? new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`)
+            : new HttpHeaders();
+    }
+
     getAnnouncements(): Observable<Announcement[]> {
-        return this.http.get<Announcement[]>(this.apiUrl);
+        return this.http.get<Announcement[]>(this.apiUrl, { headers: this.getHeaders() });
     }
 
-    getAnnouncement(id: number): Observable<Announcement> {
-        return this.http.get<Announcement>(`${this.apiUrl}/${id}`);
+    createAnnouncement(data: Partial<Announcement>): Observable<Announcement> {
+        return this.http.post<Announcement>(this.apiUrl, data, { headers: this.getHeaders() });
     }
 
-    createAnnouncement(announcement: Announcement): Observable<Announcement> {
-        return this.http.post<Announcement>(this.apiUrl, announcement);
+    deleteAnnouncement(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
     }
 
-    updateAnnouncement(id: number, announcement: Announcement): Observable<Announcement> {
-        return this.http.put<Announcement>(`${this.apiUrl}/${id}`, announcement);
-    }
-
-    deleteAnnouncement(id: number): Observable<any> {
-        return this.http.delete(`${this.apiUrl}/${id}`);
+    // Optional: method to set the auth token dynamically, if needed
+    setAuthToken(token: string) {
+        this.authToken = token;
+        localStorage.setItem('authToken', token);
     }
 }

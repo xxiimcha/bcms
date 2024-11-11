@@ -29,7 +29,7 @@ import { BarangayOfficialsFormComponent } from '../../pages/barangay-officials-f
 import { CensusComponent } from '../../pages/census/census.component';
 import { CensusFormComponent } from '../../pages/census-form/census-form.component';
 import { CensusProfileModalComponent } from '../../pages/common/census-profile-modal/census-profile-modal.component';
-import { AnnouncementListComponent } from '../../pages/announcements/announcement-list/announcement-list.component'; // Import Announcements Component
+import { AnnouncementsComponent } from '../../pages/announcements/announcements.component';
 
 @NgModule({
     imports: [
@@ -63,7 +63,7 @@ import { AnnouncementListComponent } from '../../pages/announcements/announcemen
         CensusComponent,
         CensusFormComponent,
         CensusProfileModalComponent,
-        AnnouncementListComponent // Declare Announcements Component
+        AnnouncementsComponent
     ]
 })
 export class AdminLayoutModule { }
