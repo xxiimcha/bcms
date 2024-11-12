@@ -74,6 +74,7 @@ class DashboardController extends Controller
 
     public function getAgeDistribution()
     {
+        // Define the age brackets
         $ageBrackets = [
             '0-4' => [0, 4],
             '5-9' => [5, 9],
@@ -87,21 +88,24 @@ class DashboardController extends Controller
             '45-49' => [45, 49],
             '50-54' => [50, 54],
             '55-59' => [55, 59],
-            '60+' => [60, 120],
+            '60+'  => [60, 120] // 60+ years bracket
         ];
 
         $ageBracketCounts = [];
         foreach ($ageBrackets as $bracket => $range) {
+            // Count household members in each age bracket
             $ageBracketCounts[] = HouseholdMember::whereBetween('age', $range)->count();
         }
 
+        // Calculate the percentage of senior citizens (60+)
         $totalPopulation = array_sum($ageBracketCounts);
         $seniorCitizensCount = HouseholdMember::where('age', '>=', 60)->count();
         $seniorCitizenPercentage = $totalPopulation > 0 ? ($seniorCitizensCount / $totalPopulation) * 100 : 0;
 
+        // Return response in JSON format
         return response()->json([
             'ageBracketCounts' => $ageBracketCounts,
-            'seniorCitizenPercentage' => round($seniorCitizenPercentage, 2),
+            'seniorCitizenPercentage' => round($seniorCitizenPercentage, 2)
         ]);
     }
 

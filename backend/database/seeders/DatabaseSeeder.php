@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             BarangayStaffSeeder::class,
-            BarangayResidentSeeder::class
+            CensusProfilesTableSeeder::class,
+            HouseholdMembersTableSeeder::class
         ]);
     }
 }

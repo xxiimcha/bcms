@@ -40,6 +40,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/classification-data', [DashboardController::class, 'getClassificationData']);
     Route::get('/household-members', [DashboardController::class, 'getHouseholdMembers']);
     Route::get('/total-population', [DashboardController::class, 'getTotalPopulation']);
+    Route::get('/age-distribution', [DashboardController::class, 'getAgeDistribution']);
+    Route::get('/population-forecast', [DashboardController::class, 'getPopulationForecast']);
 
     Route::post('/census-profiles', [CensusProfileController::class, 'store']);
     Route::get('/census-profiles', [CensusProfileController::class, 'index']);

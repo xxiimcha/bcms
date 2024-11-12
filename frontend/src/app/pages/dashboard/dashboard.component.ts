@@ -91,7 +91,11 @@ export class DashboardComponent implements OnInit {
     fetchTotalPopulation() {
         this.dashboardService.getTotalPopulation().subscribe(
             response => {
+                console.log('Total Population Response:', response);
                 this.totalPopulation = response.total_population;
+                if (!response.total_population) {
+                    console.warn('No total population data found in response.');
+                }
             },
             error => {
                 console.error('Error fetching total population:', error);
@@ -135,17 +139,20 @@ export class DashboardComponent implements OnInit {
 
     getAgeDistributionData() {
         this.dashboardService.getAgeDistribution().subscribe(data => {
-            this.ageBracketCounts = data?.ageBracketCounts || new Array(this.ageBrackets.length).fill(0);
-            this.seniorCitizenPercentage = data?.seniorCitizenPercentage || 0;
-            this.initializeAgeChart();
+            console.log('Age Distribution Response:', data);
+            if (data && data.ageBracketCounts) {
+                this.ageBracketCounts = data.ageBracketCounts;
+                this.seniorCitizenPercentage = data.seniorCitizenPercentage || 0;
+                this.initializeAgeChart();
+            } else {
+                console.warn('No age bracket data found in response.');
+                this.ageBracketCounts = new Array(this.ageBrackets.length).fill(0);
+            }
         }, error => {
             console.error('Error fetching age distribution data:', error);
-            this.ageBracketCounts = new Array(this.ageBrackets.length).fill(0);
-            this.seniorCitizenPercentage = 0;
-            this.initializeAgeChart();
         });
     }
-
+    
     getPopulationForecast() {
         this.dashboardService.getPopulationForecast().subscribe(data => {
             this.initializePopulationForecastChart(data);
@@ -195,34 +202,38 @@ export class DashboardComponent implements OnInit {
     }
 
     initializeAgeChart() {
-        this.ageOverviewChart = {
-            series: [
-                {
-                    name: 'Age Distribution',
-                    data: this.ageBracketCounts,
-                    color: '#49BEFF',
-                }
-            ],
-            chart: {
-                type: 'bar',
-                height: 390,
-                toolbar: { show: false },
-            },
-            plotOptions: {
-                bar: { horizontal: false, columnWidth: '35%', borderRadius: [4] },
-            },
-            xaxis: {
-                categories: this.ageBrackets,
-            },
-            yaxis: {
-                max: 100, // Assuming percentages for a clearer view
-                tickAmount: 4,
-            },
-            tooltip: {
-                theme: 'light',
-            },
-        };
-    }
+        if (this.ageBracketCounts && this.ageBracketCounts.length > 0) {
+            this.ageOverviewChart = {
+                series: [
+                    {
+                        name: 'Age Distribution',
+                        data: this.ageBracketCounts,
+                        color: '#49BEFF',
+                    }
+                ],
+                chart: {
+                    type: 'bar',
+                    height: 390,
+                    toolbar: { show: false },
+                },
+                plotOptions: {
+                    bar: { horizontal: false, columnWidth: '35%', borderRadius: [4] },
+                },
+                xaxis: {
+                    categories: this.ageBrackets,
+                },
+                yaxis: {
+                    max: 100,
+                    tickAmount: 4,
+                },
+                tooltip: {
+                    theme: 'light',
+                },
+            };
+        } else {
+            console.warn("Age bracket data is empty or not loaded.");
+        }
+    }    
 
     initializePopulationForecastChart(data: any) {
         // Ensure `current` and `forecast` data exists to avoid null errors
