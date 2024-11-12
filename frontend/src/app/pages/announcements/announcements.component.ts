@@ -10,12 +10,9 @@ export class AnnouncementsComponent implements OnInit {
     announcements: Announcement[] = [];
     newAnnouncement = {
       title: '',
-      content: '',
-      target_user_type: 'all'
+      content: '',  // Match this with the database column name
+      target_user_type: 'all'  // Match this with the database column name
     };
-
-    // Add userRole property to manage access to the form
-    userRole: string = 'resident'; // Set this to the role of the user (e.g., 'resident' or 'admin')
 
     constructor(private announcementService: AnnouncementService) {}
 
