@@ -1,10 +1,62 @@
-.example-radio-group {
-	display: flex;
-	flex-direction: column;
-	margin: 15px 0;
-	align-items: flex-start;
+/* General Container Styling */
+.container {
+    font-family: 'Open Sans', sans-serif;
 }
 
-.example-radio-button {
-	margin: 5px;
+/* Header Title and Subtitle Styling */
+.dashboard-title {
+    font-size: 2.5rem;
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    color: #2C3E50;
+}
+
+.dashboard-subtitle {
+    font-size: 1.1rem;
+    color: #95A5A6;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* Card and Chart Styling */
+.stats-card {
+    transition: all 0.3s ease-in-out;
+}
+
+.chart-card {
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Font Styling for Statistics */
+.card-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.display-4 {
+    font-size: 2.5rem;
+    font-family: 'Lora', serif;
+    font-weight: 600;
+}
+
+/* Icon and Text Styling for Gender Distribution */
+.text-primary {
+    color: #2C3E50 !important;
+}
+
+.text-danger {
+    color: #E74C3C !important;
+}
+
+/* Chart Headers */
+.card-header h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-family: 'Lora', serif;
+    color: #2C3E50;
 }

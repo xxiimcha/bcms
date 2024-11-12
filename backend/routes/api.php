@@ -15,7 +15,7 @@ use App\Http\Controllers\BarangayResidentDocumentController;
 use App\Http\Controllers\SpecialURLController;
 use App\Http\Controllers\CensusProfileController;
 use App\Http\Controllers\AnnouncementController;
-
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +35,11 @@ Route::get('open-in-desktop', [SpecialURLController::class, 'open_in_desktop']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::get('/census-profiles', [DashboardController::class, 'getCensusProfiles']);
+    Route::get('/classification-data', [DashboardController::class, 'getClassificationData']);
+    Route::get('/household-members', [DashboardController::class, 'getHouseholdMembers']);
+    Route::get('/total-population', [DashboardController::class, 'getTotalPopulation']);
 
     Route::post('/census-profiles', [CensusProfileController::class, 'store']);
     Route::get('/census-profiles', [CensusProfileController::class, 'index']);

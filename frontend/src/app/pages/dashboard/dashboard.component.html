@@ -1,137 +1,105 @@
-<div class="row mb-1">
-    <div class="col-xl-3 col-lg-6">
-        <div class="card card-stats mb-4 mb-xl-0">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0">Residents</h5>
+<div class="container py-5">
+    <!-- Header -->
+    <div class="row mb-5">
+        <div class="col">
+            <h2 class="text-center font-weight-bold text-primary dashboard-title">Dashboard Overview</h2>
+            <p class="text-center text-muted dashboard-subtitle">An overview of census data and classifications</p>
+        </div>
+    </div>
+
+    <!-- Statistics Row -->
+    <div class="row mb-5">
+        <!-- Total Population -->
+        <div class="col-xl-4 col-lg-6 mb-4">
+            <div class="card shadow-sm border-0 stats-card">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="card-title text-muted mb-1">Total Population</h5>
+                            <span class="display-4 text-primary">{{ totalPopulation }}</span>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-3x text-primary"></i>
+                        </div>
                     </div>
                 </div>
-                <p class="mt-2 mb-4 text-muted text-sm">
-                    <span class="h4 text-uppercase mr-2"><i class="fa fa-male"></i> <i class="fa fa-female"></i> {{ residents.length }}<br>&nbsp;</span>
-                </p>
             </div>
         </div>
-    </div>
-    <div class="col-xl-3 col-lg-6">
-        <div class="card card-stats mb-4 mb-xl-0">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0">Gender</h5>
+
+        <!-- Census Conducted -->
+        <div class="col-xl-4 col-lg-6 mb-4">
+            <div class="card shadow-sm border-0 stats-card">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="card-title text-muted mb-1">Census Conducted</h5>
+                            <span class="display-4 text-primary">{{ censusProfiles.length }}</span>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-check fa-3x text-primary"></i>
+                        </div>
                     </div>
                 </div>
-                <p class="mt-2 mb-4 text-muted text-sm">
-                    <span class="h4 text-uppercase mr-2"><i class="fa fa-male"></i> {{ maleCount }} ({{ malePercentage }} %)<br><i class="fa fa-female"></i> {{ femaleCount }} ({{ femalePercentage }} %)</span>
-                </p>
             </div>
         </div>
-    </div>
-    <div class="col-xl-3 col-lg-6">
-        <div class="card card-stats mb-4 mb-xl-0">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title text-uppercase text-muted mb-0">Civil Status</h5>
+
+        <!-- Gender Distribution -->
+        <div class="col-xl-4 col-lg-12 mb-4">
+            <div class="card shadow-sm border-0 stats-card">
+                <div class="card-body">
+                    <h5 class="card-title text-muted mb-1">Gender Distribution</h5>
+                    <div class="d-flex align-items-center mt-3">
+                        <i class="fas fa-male fa-2x text-primary mr-3"></i>
+                        <span class="h4 text-primary">{{ maleCount }} ({{ malePercentage }}%)</span>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <i class="fas fa-female fa-2x text-danger mr-3"></i>
+                        <span class="h4 text-danger">{{ femaleCount }} ({{ femalePercentage }}%)</span>
                     </div>
                 </div>
-                <p class="mt-2 mb-2 text-muted text-sm">
-                    <span class="text-uppercase mr-2">
-                        Single: {{ singleCount }} ({{ singlePercentage }} %)<br>
-                        Married: {{ marriedCount }} ({{ marriedPercentage }} %)<br>
-                        Separated: {{ separatedCount }} ({{ separatedPercentage }} %)<br>
-                        Widowed: {{ widowedCount }} ({{ widowedPercentage }} %)
-                    </span>
-                </p>
             </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h4>Residents per Classification</h4>
-            </div>
-            <div class="card-body">
-                <apx-chart 
-                    *ngIf="classificationOverviewChart"
-                    [series]="classificationOverviewChart.series" 
-                    [dataLabels]="classificationOverviewChart.dataLabels"
-                    [chart]="classificationOverviewChart.chart" 
-                    [labels]="classificationOverviewChart.labels"
-                ></apx-chart>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h4>Certificate Requests</h4>
-            </div>
-            <div class="card-body">
-                <apx-chart 
-                    *ngIf="certificatesRequestedOverviewChart"
-                    [series]="certificatesRequestedOverviewChart.series" 
-                    [dataLabels]="certificatesRequestedOverviewChart.dataLabels"
-                    [chart]="certificatesRequestedOverviewChart.chart" 
-                    [legend]="certificatesRequestedOverviewChart.legend"
-                    [xaxis]="certificatesRequestedOverviewChart.xaxis" 
-                    [yaxis]="certificatesRequestedOverviewChart.yaxis"
-                    [grid]="certificatesRequestedOverviewChart.grid" 
-                    [stroke]="certificatesRequestedOverviewChart.stroke"
-                    [tooltip]="certificatesRequestedOverviewChart.tooltip" 
-                    [plotOptions]="certificatesRequestedOverviewChart.plotOptions"
-                ></apx-chart>
+
+    <!-- Chart Row -->
+    <div class="row">
+        <!-- Census Profiles per Classification (Pie Chart) -->
+        <div class="col-md-12 col-lg-6 mb-4">
+            <div class="card shadow-sm border-0 chart-card">
+                <div class="card-header bg-transparent border-bottom-0">
+                    <h4 class="text-primary font-weight-bold mb-0">Census Profiles per Classification</h4>
+                </div>
+                <div class="card-body">
+                    <apx-chart 
+                        *ngIf="classificationOverviewChart"
+                        [series]="classificationOverviewChart.series" 
+                        [dataLabels]="classificationOverviewChart.dataLabels"
+                        [chart]="classificationOverviewChart.chart" 
+                        [labels]="classificationOverviewChart.labels"
+                        [responsive]="classificationOverviewChart.responsive"
+                    ></apx-chart>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h4>Predictive Analysis</h4>
-            </div>
-            <div class="card-body">
-                <apx-chart 
-                    *ngIf="populationOverviewChart"
-                    [series]="populationOverviewChart.series" 
-                    [dataLabels]="populationOverviewChart.dataLabels"
-                    [chart]="populationOverviewChart.chart" 
-                    [legend]="populationOverviewChart.legend"
-                    [xaxis]="populationOverviewChart.xaxis" 
-                    [yaxis]="populationOverviewChart.yaxis"
-                    [grid]="populationOverviewChart.grid" 
-                    [stroke]="populationOverviewChart.stroke"
-                    [tooltip]="populationOverviewChart.tooltip" 
-                    [plotOptions]="populationOverviewChart.plotOptions"
-                ></apx-chart>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h4>About {{ seniorCitizenPercentage }} % belong to Senior Citizen Category</h4>
-                <h6>A healthy distribution of young adult resident can be observed</h6>
-            </div>
-            <div class="card-body">
-                <apx-chart 
-                    *ngIf="ageOverviewChart"
-                    [series]="ageOverviewChart.series" 
-                    [dataLabels]="ageOverviewChart.dataLabels"
-                    [chart]="ageOverviewChart.chart" 
-                    [legend]="ageOverviewChart.legend"
-                    [xaxis]="ageOverviewChart.xaxis" 
-                    [yaxis]="ageOverviewChart.yaxis"
-                    [grid]="ageOverviewChart.grid" 
-                    [stroke]="ageOverviewChart.stroke"
-                    [tooltip]="ageOverviewChart.tooltip" 
-                    [plotOptions]="ageOverviewChart.plotOptions"
-                ></apx-chart>
+
+        <!-- Age Distribution Chart -->
+        <div class="col-md-12 col-lg-6 mb-4">
+            <div class="card shadow-sm border-0 chart-card">
+                <div class="card-header bg-transparent border-bottom-0">
+                    <h4>About {{ seniorCitizenPercentage }}% belong to Senior Citizen Category</h4>
+                    <h6 class="text-muted">A healthy distribution of young adult residents can be observed</h6>
+                </div>
+                <div class="card-body">
+                    <apx-chart 
+                        *ngIf="ageOverviewChart"
+                        [series]="ageOverviewChart.series" 
+                        [chart]="ageOverviewChart.chart" 
+                        [xaxis]="ageOverviewChart.xaxis" 
+                        [yaxis]="ageOverviewChart.yaxis" 
+                        [plotOptions]="ageOverviewChart.plotOptions"
+                        [tooltip]="ageOverviewChart.tooltip"
+                    ></apx-chart>
+                </div>
             </div>
         </div>
     </div>
