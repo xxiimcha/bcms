@@ -46,4 +46,9 @@ export class DashboardService {
     const headers = this.getAuthHeaders();
     return this.http.get(`${this.baseUrl}/age-distribution`, { headers });
   }
+  
+  getPopulationForecast(): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.baseUrl}/population-forecast`, { headers });
+  }
 }

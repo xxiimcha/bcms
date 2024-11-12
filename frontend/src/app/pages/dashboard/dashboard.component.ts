@@ -2,16 +2,11 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import {
     ApexChart,
     ChartComponent,
-    ApexDataLabels,
-    ApexLegend,
-    ApexNonAxisChartSeries,
-    ApexResponsive,
     ApexAxisChartSeries,
     ApexXAxis,
     ApexYAxis,
-    ApexGrid,
-    ApexStroke,
     ApexTooltip,
+    ApexStroke
 } from 'ng-apexcharts';
 import { DashboardService } from '../../services/dashboard.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -43,11 +38,13 @@ export interface HouseholdMember {
     educationalAttainment: string;
 }
 
-export interface ClassificationChart {
-    series: ApexNonAxisChartSeries;
+export interface PopulationForecastChart {
+    series: ApexAxisChartSeries;
     chart: ApexChart;
-    dataLabels: ApexDataLabels;
-    legend: ApexLegend;
+    xaxis: ApexXAxis;
+    yaxis: ApexYAxis;
+    tooltip: ApexTooltip;
+    stroke: ApexStroke;
 }
 
 @Component({
@@ -58,21 +55,23 @@ export interface ClassificationChart {
 export class DashboardComponent implements OnInit {
     @ViewChild('chart') chart: ChartComponent = Object.create(null);
 
-    public classificationOverviewChart!: Partial<ClassificationChart> | any;
+    public classificationOverviewChart!: Partial<any> | any;
     public ageOverviewChart!: Partial<any> | any;
+    public populationForecastChart!: Partial<PopulationForecastChart> | any;
 
     censusProfiles: CensusProfile[] = [];
+    totalPopulation: number = 0;
+    seniorCitizenPercentage: number = 0;
     maleCount: number = 0;
     femaleCount: number = 0;
     malePercentage: string = '';
     femalePercentage: string = '';
-    totalPopulation: number = 0;
-    seniorCitizenPercentage: number = 0;
+    forecastYears: string[] = [];
 
     classificationBrackets: string[] = ['Children', 'Youth', 'Senior Citizens', 'PWD', '4Ps Members'];
     classificationBracketCount: number[] = new Array(this.classificationBrackets.length).fill(0);
     classificationData: any;
-    
+
     ageBrackets: string[] = ['Null', '0-4', '5-9', '10-14', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60+'];
     ageBracketCounts: number[] = [];
 
@@ -86,6 +85,7 @@ export class DashboardComponent implements OnInit {
         this.fetchCensusProfiles();
         this.fetchClassificationData();
         this.getAgeDistributionData();
+        this.getPopulationForecast();
     }
 
     fetchTotalPopulation() {
@@ -119,7 +119,6 @@ export class DashboardComponent implements OnInit {
     fetchClassificationData() {
         this.dashboardService.getClassificationData().subscribe(res => {
             if (res) {
-                this.classificationData = res;
                 this.classificationBracketCount = [
                     res.children || 0,
                     res.youth || 0,
@@ -135,19 +134,25 @@ export class DashboardComponent implements OnInit {
     }
 
     getAgeDistributionData() {
-		this.dashboardService.getAgeDistribution().subscribe(data => {
-			console.log('Age Distribution Data:', data); // Debugging line
-			this.ageBracketCounts = data?.ageBracketCounts || new Array(this.ageBrackets.length).fill(0);
-			this.seniorCitizenPercentage = data?.seniorCitizenPercentage || 0;
-			this.initializeAgeChart();
-		}, error => {
-			console.error('Error fetching age distribution data:', error);
-			this.ageBracketCounts = new Array(this.ageBrackets.length).fill(0);
-			this.seniorCitizenPercentage = 0;
-			this.initializeAgeChart();
-		});
-	}
-	
+        this.dashboardService.getAgeDistribution().subscribe(data => {
+            this.ageBracketCounts = data?.ageBracketCounts || new Array(this.ageBrackets.length).fill(0);
+            this.seniorCitizenPercentage = data?.seniorCitizenPercentage || 0;
+            this.initializeAgeChart();
+        }, error => {
+            console.error('Error fetching age distribution data:', error);
+            this.ageBracketCounts = new Array(this.ageBrackets.length).fill(0);
+            this.seniorCitizenPercentage = 0;
+            this.initializeAgeChart();
+        });
+    }
+
+    getPopulationForecast() {
+        this.dashboardService.getPopulationForecast().subscribe(data => {
+            this.initializePopulationForecastChart(data);
+        }, error => {
+            console.error('Error fetching population forecast:', error);
+        });
+    }
 
     calculateByGender() {
         this.maleCount = this.censusProfiles.reduce((total, profile) => total + profile.male_members, 0);
@@ -219,6 +224,53 @@ export class DashboardComponent implements OnInit {
         };
     }
 
+    initializePopulationForecastChart(data: any) {
+        // Ensure `current` and `forecast` data exists to avoid null errors
+        const currentData = data.current || { population: 0, employed: 0, unemployed: 0 };
+        const forecastData = data.forecast || { population: 0, employed: 0, unemployed: 0 };
+
+        // Extract year from `created_at` if available, else use default years
+        const currentYear = new Date(currentData.created_at || Date.now()).getFullYear();
+        const nextYear = currentYear + 1;
+
+        this.forecastYears = [currentYear.toString(), nextYear.toString()];
+
+        this.populationForecastChart = {
+            series: [
+                {
+                    name: 'Population',
+                    data: [currentData.population, forecastData.population]
+                },
+                {
+                    name: 'Employed',
+                    data: [currentData.employed, forecastData.employed]
+                },
+                {
+                    name: 'Unemployed',
+                    data: [currentData.unemployed, forecastData.unemployed]
+                }
+            ],
+            chart: {
+                type: 'line',
+                height: 350
+            },
+            xaxis: {
+                categories: this.forecastYears
+            },
+            yaxis: {
+                title: {
+                    text: 'Counts'
+                }
+            },
+            stroke: {
+                curve: 'smooth'
+            },
+            tooltip: {
+                theme: 'dark'
+            }
+        };
+    }
+	
     handleDataPointSelection(index: number) {
         const profileData = [
             this.classificationData['children']?.profiles || [],

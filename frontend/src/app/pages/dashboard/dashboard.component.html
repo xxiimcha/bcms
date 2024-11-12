@@ -102,5 +102,26 @@
                 </div>
             </div>
         </div>
+
+        <div class="row mb-4">
+            <div class="col-md-12 col-lg-6 mb-4">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-transparent border-bottom-0">
+                        <h4 class="text-primary font-weight-bold mb-0">Predictive Analysis for Population</h4>
+                    </div>
+                    <div class="card-body">
+                        <apx-chart 
+                            *ngIf="populationForecastChart"
+                            [series]="populationForecastChart.series" 
+                            [chart]="populationForecastChart.chart" 
+                            [xaxis]="populationForecastChart.xaxis" 
+                            [yaxis]="populationForecastChart.yaxis" 
+                            [stroke]="populationForecastChart.stroke" 
+                            [tooltip]="populationForecastChart.tooltip"
+                        ></apx-chart>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

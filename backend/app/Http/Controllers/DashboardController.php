@@ -105,5 +105,27 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function getPopulationForecast()
+    {
+        $totalPopulation = HouseholdMember::count();
+        $employedCount = HouseholdMember::where('is_employed', 1)->count();
+        $unemployedCount = $totalPopulation - $employedCount;
 
+        // Assumed 2% growth rate for next year's forecast
+        $growthRate = 1.02;
+        $forecast = [
+            'population' => round($totalPopulation * $growthRate),
+            'employed' => round($employedCount * $growthRate),
+            'unemployed' => round($unemployedCount * $growthRate),
+        ];
+
+        return response()->json([
+            'current' => [
+                'population' => $totalPopulation,
+                'employed' => $employedCount,
+                'unemployed' => $unemployedCount,
+            ],
+            'forecast' => $forecast
+        ]);
+    }
 }
