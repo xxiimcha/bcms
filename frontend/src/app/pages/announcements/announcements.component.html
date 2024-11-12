@@ -1,6 +1,6 @@
 <div class="container mt-5">
-    <!-- Announcement Form -->
-    <div class="card shadow-sm">
+    <!-- Announcement Form (Only show if the user is not a resident) -->
+    <div *ngIf="userRole !== 'resident'" class="card shadow-sm">
         <div class="card-header bg-primary text-white">
             <h5 class="mb-0">Create New Announcement</h5>
         </div>
@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <!-- Announcement Table -->
+    <!-- Announcement Table (Visible to all users) -->
     <div class="card mt-5 shadow-sm">
         <div class="card-header bg-secondary text-white">
             <h5 class="mb-0">Current Announcements</h5>
@@ -41,7 +41,7 @@
                         <th>Title</th>
                         <th>Message</th>
                         <th>User Type</th>
-                        <th>Actions</th>
+                        <th *ngIf="userRole !== 'resident'">Actions</th> <!-- Show actions column only if user is not a resident -->
                     </tr>
                 </thead>
                 <tbody>
@@ -49,7 +49,7 @@
                         <td class="fw-bold">{{ announcement.title }}</td>
                         <td>{{ announcement.content }}</td>
                         <td class="text-capitalize">{{ announcement.target_user_type }}</td>
-                        <td class="text-center">
+                        <td *ngIf="userRole !== 'resident'" class="text-center">
                             <button (click)="deleteAnnouncement(announcement.id)" class="btn btn-danger btn-sm px-3">Delete</button>
                         </td>
                     </tr>

@@ -29,7 +29,11 @@ use App\Http\Controllers\DashboardController;
 */
 
 Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [RegisterController::class, 'register']);
+Route::post('/register', [RegisterController::class, 'register']);
+
+Route::post('/send-otp', [RegisterController::class, 'generateOtp']);
+Route::post('/verify-otp', [RegisterController::class, 'verifyOtp']);
+
 Route::post('forgot-password', [ForgotPasswordController::class, 'forgot_password']);
 Route::get('open-in-desktop', [SpecialURLController::class, 'open_in_desktop']);
 

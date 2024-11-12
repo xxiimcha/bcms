@@ -13,7 +13,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/app/residents', title: 'Residents', icon: 'nc-single-02', class: '', role: 'super admin|admin|Kapitan|Kagawad|Clearance Staff' },
     { path: '/app/certificates', title: 'Certificates', icon: 'nc-paper', class: '', role: 'super admin|admin|Kapitan|Kagawad|Clearance Staff' },
     { path: '/app/census', title: 'Census Profile', icon: 'nc-badge', class: '', role: 'super admin|admin|Kapitan|Kagawad|Clearance Staff' },
-    { path: '/app/announcements', title: 'Announcements', icon: 'nc-bell-55', class: '', role: 'super admin|admin|Kapitan|Kagawad|Clearance Staff' },
+    { path: '/app/announcements', title: 'Announcements', icon: 'nc-bell-55', class: '', role: 'super admin|admin|Kapitan|Kagawad|Clearance Staf|resident' },
     { path: '/app/brgy-official', title: 'Brgy Officials', icon: 'nc-single-02', class: '', role: 'super admin' },
     { path: '/app/residents/profile/view/:id', title: 'Request Form', icon: 'nc-simple-add', class: '', role: 'resident' },
     { path: '/app/settings', title: 'Settings', icon: 'nc-bullet-list-67', class: '', role: 'super admin|admin|resident|Kapitan|Kagawad|Clearance Staff' },
