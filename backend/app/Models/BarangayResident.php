@@ -9,85 +9,52 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\CanResetPassword;
-use App\Models\CensusProfileEmployment;
-use App\Models\CensusProfileFamily;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
 
 class BarangayResident extends Authenticatable implements CanResetPassword
 {
     use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
 
-    protected $table = 'barangay_resident'; // Updated to reflect the new table name
+    protected $table = 'barangay_resident'; // Reflects the current table name
 
     protected $fillable = [
+        'resident_id',
         'first_name',
         'middle_name',
         'last_name',
+        'email',
+        'password',
+        'role',
         'gender',
         'age',
         'birthdate',
         'civil_status',
-        'household_count',
-        'email',
         'contact_number',
         'place_of_birth',
-        'employed',
-        'occupation',
-        'monthly_salary',
-        'purok',
-        'street',
+        'present_address',
         'barangay',
         'city',
-        'zipcode',
-        'role',
-        'password',
-        'resident_id',
-        'profile_status',
-        'education',
-        'address',
-        'ownership',
-        'length_of_stay',
-        'provincial_address',
-        'height',
-        'weight',
-        'religion',
-        'voter',
-        'four_ps',
-        'pwd',
-        'elementary',
-        'high_school',
-        'vocational',
-        'college'
+        'previous_address',
+        'house_owner',      // Name of house owner (if rented)
+        'months_years',     // Number of months/years stayed in barangay
+        'residency_type',   // Type of residency (owner/renter)
+        'purpose',          // Purpose of the application
+        'other_purpose',    // For custom purposes
+        'certificate',      // Selected certificate/form
+        'date'              // Date of the application
     ];
 
-    public function families(): HasMany
-    {
-        return $this->hasMany(CensusProfileFamily::class, 'census_id');
-    }
-
-    public function employments(): HasMany
-    {
-        return $this->hasMany(CensusProfileEmployment::class, 'census_id');
-    }
-
-
     /**
-     * Get the email address that should be used for password reset notifications.
-     *
-     * @return string
+     * Password Reset Methods
      */
+
+    // Get the email address that should be used for password reset notifications
     public function getEmailForPasswordReset()
     {
         return $this->email;
     }
 
-    /**
-     * Send the password reset notification.
-     *
-     * @param  string  $token
-     * @return void
-     */
+    // Send the password reset notification
     public function sendPasswordResetNotification($token)
     {
         $url = env('APP_URL') . '/reset-password?token=' . $token;

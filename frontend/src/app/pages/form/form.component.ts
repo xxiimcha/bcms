@@ -48,27 +48,23 @@ export class FormComponent implements OnInit {
         });
         this.profileForm = this.formBuilder.group({
             id: null,
-            email: ['', [Validators.required, Validators.email]],
-            middle_name: '',
             first_name: ['', [Validators.required]],
+            middle_name: '',
             last_name: ['', [Validators.required]],
-            gender: '',
+            date: ['', Validators.required],
+            present_address: ['', Validators.required],
+            sex: ['', Validators.required],
             age: '',
-            household_count: '',
-            birthdate: '',
             civil_status: '',
+            birthdate: '',
+            previous_address: '',
+            house_owner: '',
+            months_years: '',
+            residency_type: '',
             contact_number: '',
-            place_of_birth: '',
-            employed: '',
-            occupation: '',
-            monthly_salary: '',
-            street: '',
-            purok: '',
-            barangay: [{ value: 'Rosario', disabled: true }],
-            city: [{ value: 'Pasig City', disabled: true }],
-            zipcode: [{ value: '1609', disabled: true }],
-            certificate: '',
-            education: ''
+            purpose: '',
+            other_purpose: '',
+            certificate: ''
         });
 
         if(this.mode === 'view') {
@@ -124,26 +120,24 @@ export class FormComponent implements OnInit {
 
     private initializeForm() {
         this.profileForm.patchValue({
-            id: this.profileData!.id,
-            email: this.profileData!.email,
-            middle_name: this.profileData!.middle_name,
-            first_name: this.profileData!.first_name,
-            last_name: this.profileData!.last_name,
-            gender: this.profileData!.gender,
-            age: this.profileData!.age,
-            birthdate: this.profileData!.birthdate,
-            civil_status: this.profileData!.civil_status,
-            household_count: this.profileData!.household_count,
-            contact_number: this.profileData!.contact_number,
-            place_of_birth: this.profileData!.place_of_birth,
-            employed: this.profileData!.employed,
-            occupation: this.profileData!.occupation,
-            monthly_salary: this.profileData!.monthly_salary,
-            street: this.profileData!.street,
-            purok: this.profileData!.purok,
-            city: this.profileData!.city,
-            zipcode: this.profileData!.zipcode,
-            education: this.profileData!.education
+            id: this.profileData?.id,
+            first_name: this.profileData?.first_name,
+            middle_name: this.profileData?.middle_name,
+            last_name: this.profileData?.last_name,
+            date: this.profileData?.date,
+            present_address: this.profileData?.present_address,
+            sex: this.profileData?.sex,
+            age: this.profileData?.age,
+            birthdate: this.profileData?.birthdate,
+            civil_status: this.profileData?.civil_status,
+            previous_address: this.profileData?.previous_address,
+            house_owner: this.profileData?.house_owner,
+            months_years: this.profileData?.months_years,
+            residency_type: this.profileData?.residency_type,
+            contact_number: this.profileData?.contact_number,
+            purpose: this.profileData?.purpose,
+            other_purpose: this.profileData?.other_purpose,
+            certificate: this.profileData?.certificate
         });
     }
 

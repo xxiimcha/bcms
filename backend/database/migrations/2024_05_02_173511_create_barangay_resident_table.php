@@ -15,60 +15,36 @@ class CreateBarangayResidentTable extends Migration
     {
         Schema::create('barangay_resident', function (Blueprint $table) {
             $table->id();
-            $table->string('resident_id')->nullable();
+            $table->string('resident_id')->nullable(); // e.g., RES001, incremental
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
-            $table->text('address')->nullable();
-            $table->string('ownership')->nullable();
-            $table->string('length_of_stay')->nullable();
-            $table->text('provincial_address')->nullable();
-            $table->string('gender')->nullable();
+            $table->text('present_address')->nullable();
+            $table->string('gender')->nullable(); // Male/Female
             $table->integer('age')->nullable();
-            $table->string('civil_status')->nullable();
+            $table->string('civil_status')->nullable(); // Single, Married, etc.
             $table->date('birthdate')->nullable();
             $table->string('place_of_birth')->nullable();
             $table->string('contact_number')->nullable();
-            $table->string('height')->nullable();
-            $table->string('weight')->nullable();
-            $table->string('religion')->nullable();
             $table->string('email')->nullable();
             $table->string('password')->nullable();
-            $table->string('voter')->nullable();
-            $table->string('four_ps')->nullable();
-            $table->string('pwd')->nullable();
-            $table->string('employed')->nullable();
-            $table->string('occupation')->nullable();
-            $table->string('monthly_salary')->nullable();
-            $table->string('purok')->nullable();
-            $table->string('street')->nullable();
-            $table->string('barangay')->nullable();
-            $table->string('city')->nullable();
-            $table->string('zipcode')->nullable();
-            $table->string('role')->nullable();
-            $table->string('education')->nullable();
-            $table->string('profile_status')->nullable();
-            $table->integer('household_count')->nullable();
+            $table->string('role')->default('resident'); // Defaults to 'resident'
 
-            $table->text('elementary')->nullable();
-            $table->text('elementary_address')->nullable();
+            // Residency details
+            $table->text('previous_address')->nullable();
+            $table->string('house_owner')->nullable(); // Name of house owner (if rented)
+            $table->string('months_years')->nullable(); // Duration of stay in barangay
+            $table->string('residency_type')->nullable(); // Owner/Renter
 
-            $table->text('high_school')->nullable();
-            $table->text('high_school_address')->nullable();
+            // Application purpose and certificate
+            $table->string('purpose')->nullable();
+            $table->string('other_purpose')->nullable();
+            $table->string('certificate')->nullable(); // Selected certificate/form type
 
-            $table->text('vocational')->nullable();
-            $table->text('vocational_address')->nullable();
-
-            $table->text('college')->nullable();
-            $table->text('college_address')->nullable();
-
-            $table->string('otp')->nullable();
-            $table->dateTime('otp_expires_at')->nullable();
-            $table->string('two_factor')->nullable();
-            $table->dateTime('two_factor_expires_at')->nullable();
-
+            // Timestamps
+            $table->date('date')->nullable(); // Date of application
             $table->timestamps();
-            $table->softDeletes();
+            $table->softDeletes(); // For soft deletion
         });
     }
 
