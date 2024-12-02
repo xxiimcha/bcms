@@ -62,10 +62,10 @@ export class FormComponent implements OnInit {
             months_years: '',
             residency_type: '',
             contact_number: '',
-            purpose: '',
+            purpose: ['', Validators.required],
             other_purpose: '',
-            certificate: ''
-        });
+            certificate: ['', Validators.required],
+        });        
 
         if(this.mode === 'view') {
             this.disableAllExceptCertificate();
@@ -112,6 +112,13 @@ export class FormComponent implements OnInit {
         }
     }
 
+    onCertificateChange(event: any) {
+        const selectedId = event.target.value;
+        const selectedDocument = this.documents.find((doc) => doc.id == selectedId);
+        this.selectedDocumentType = selectedDocument?.certificate_type ?? '';
+        this.selectedDocumentValue = selectedDocument?.certificate_value ?? '';
+    }
+    
     private initializeNewResidentCertificate() {
         this.apiService.getResidentsDocumentById(this.residentId).subscribe(response => {
             this.residentDocument = response;
@@ -143,11 +150,11 @@ export class FormComponent implements OnInit {
 
     disableAllExceptCertificate() {
         Object.keys(this.profileForm.controls).forEach(key => {
-            if (key !== 'certificate') {
+            if (key !== 'certificate' && key !== 'purpose' && key !== 'other_purpose') {
                 this.profileForm.get(key)!.disable();
             }
         });
-    }
+    }    
 
     submitProfile() {
         this.apiService.updateResident(this.profileForm.value).subscribe(() => {
@@ -203,31 +210,35 @@ export class FormComponent implements OnInit {
     }
     
     requestCertificate() {
-        if(this.selectedDocumentType != '') {
-            const modalRef = this.modalService.open(PurposeModalComponent, { size: 'small', backdrop: 'static', centered: true });
-            modalRef.componentInstance.confirmed.subscribe((result: any) => {
-                if (result) {
-                    const requestResidentData: BarangayResidentDocument = {
-                        resident_id: this.profileData.id,
-                        certificate_type: this.selectedDocumentType,
-                        certificate_file: this.selectedDocumentValue,
-                        id: 0,
-                        date_issued: new Date().toLocaleDateString(),
-                        purpose: result.purpose != "" ? result.purpose: "whatever legal purpose it may serve",
-                        status: this.userRole === 'admin' ? "Completed" : "Requested"
-                    }
-                    this.apiService.saveResidentsDocument(requestResidentData).subscribe((res) => {
-                        this.toastr.success('Resident Document Requested Success', 'Close');
-                        this.initializeNewResidentCertificate();
-                    }, error => {
-                        console.error('Error updating profile:', error);
-                    });
+        console.log('Form Values:', this.profileForm.value); // Log all form values
+        console.log('Selected Document:', this.selectedDocumentType);
+        console.log('Selected Purpose:', this.profileForm.value.purpose);
+    
+        if (this.selectedDocumentType && this.profileForm.value.purpose) {
+            const requestResidentData: BarangayResidentDocument = {
+                resident_id: this.profileData.id,
+                certificate_type: this.selectedDocumentType,
+                certificate_file: this.selectedDocumentValue,
+                id: 0,
+                date_issued: new Date().toLocaleDateString(),
+                purpose: this.profileForm.value.purpose,
+                status: this.userRole === 'admin' ? 'Completed' : 'Requested',
+            };
+    
+            this.apiService.saveResidentsDocument(requestResidentData).subscribe(
+                (res) => {
+                    this.toastr.success('Resident Document Requested Successfully', 'Close');
+                    this.initializeNewResidentCertificate();
+                },
+                (error) => {
+                    console.error('Error updating profile:', error);
+                    this.toastr.error('Error while requesting document', 'Close');
                 }
-            });
+            );
         } else {
-            this.toastr.error('Please select certificate', 'Close');
+            this.toastr.error('Please select certificate and purpose', 'Close');
         }
-    }
+    }    
 
     generateQRCode() {
         this.modalService.open(QRModalComponent, { size: 'lg', backdrop: 'static', centered: true });
