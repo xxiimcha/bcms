@@ -147,32 +147,17 @@
                                 <th>Date Issued</th>
                                 <th>Purpose</th>
                                 <th>Status</th>
-                                <th>Action</th> <!-- New Action column -->
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- If residentDocument exists -->
                             <tr *ngIf="residentDocument">
                                 <td>{{ residentDocument?.certificate_type }}</td>
                                 <td>{{ residentDocument?.date_issued }}</td>
                                 <td>{{ residentDocument?.purpose }}</td>
                                 <td>{{ residentDocument?.status }}</td>
-                                <td>
-                                    <button
-                                        class="btn btn-primary"
-                                        *ngIf="residentDocument?.status !== 'Released'"
-                                        (click)="releaseCertificate(residentDocument)"
-                                    >
-                                        Release
-                                    </button>
-                                    <span *ngIf="residentDocument?.status === 'Released'" class="text-success">
-                                        Released
-                                    </span>
-                                </td>
                             </tr>
-                            <!-- If no residentDocument -->
                             <tr *ngIf="!residentDocument">
-                                <td colspan="5" class="text-center">No Requested Form</td>
+                                <td colspan="4" class="text-center">No Requested Form</td>
                             </tr>
                         </tbody>
                     </table>
@@ -197,7 +182,7 @@
     <div class="d-flex justify-content-end" *ngIf="(userRole !=='admin' && userRole !=='Kagawad' && userRole !=='Kapitan')">
         <button type="submit" class="btn btn-primary m-1" (click)="editForm()" *ngIf="mode == 'view'">Edit</button>
         <button type="submit" class="btn btn-primary m-1" (click)="generateQRCode()" *ngIf="mode== 'view'">Generate QR Code</button>
-        <button type="submit" class="btn btn-primary m-1" (click)="submitProfile()" [disabled]="!profileForm.valid" *ngIf="mode != 'view'">Save</button>
+        <button type="submit" class="btn btn-primary m-1" (click)="submitProfile()" [disabled]="!profileForm.invalid" *ngIf="mode != 'view'">Save</button>
         <button type="submit" class="btn btn-success m-1" *ngIf="mode== 'view'" (click)="requestCertificate()">Request Certificate</button>
     </div>
 </form>

@@ -3,133 +3,97 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\HouseholdMember;
+use App\Models\BarangayResidentDocument;
+use App\Models\Notification; // Import the Notification model
 
 class DashboardController extends Controller
 {
-    /**
-     * Fetch census profiles with age-based classification counts.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getCensusProfiles()
-    {
-        // Classification based on age and other criteria
-        $classificationData = [
-            'children' => HouseholdMember::whereBetween('age', [0, 14])->count(),
-            'youth' => HouseholdMember::whereBetween('age', [15, 24])->count(),
-            'senior_citizens' => HouseholdMember::where('age', '>=', 60)->count(),
-            'pwd' => HouseholdMember::where('is_pwd', 1)->count(),
-            'four_ps' => HouseholdMember::where('is_4ps_beneficiary', 1)->count(),
-        ];
-
-        return response()->json($classificationData);
-    }
-
-    /**
-     * Fetch classification data for age brackets and gender distribution.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getClassificationData()
-    {
-        // Classification based on age and other criteria
-        $classificationData = [
-            'children' => HouseholdMember::whereBetween('age', [0, 14])->count(),
-            'youth' => HouseholdMember::whereBetween('age', [15, 24])->count(),
-            'senior_citizens' => HouseholdMember::where('age', '>=', 60)->count(),
-            'pwd' => HouseholdMember::where('is_pwd', 1)->count(),
-            'four_ps' => HouseholdMember::where('is_4ps_beneficiary', 1)->count(),
-        ];
-
-        return response()->json($classificationData);
-    }
-
-    /**
-     * Fetch household members data with age and gender distribution.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getHouseholdMembers()
+    // Total Certificates Issued
+    public function getTotalCertificates()
     {
         try {
-            $householdMembers = HouseholdMember::selectRaw('age, sex as gender, COUNT(*) as count')
-                ->groupBy('age', 'sex')
+            $total = BarangayResidentDocument::count();
+            return response()->json(['total' => $total], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch total certificates', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    // Certificate Types
+    public function getCertificateTypeData()
+    {
+        try {
+            $data = BarangayResidentDocument::selectRaw('certificate_type, COUNT(*) as count')
+                ->groupBy('certificate_type')
+                ->orderBy('count', 'DESC') // Optional: Order by count for better visualization
                 ->get();
 
-            return response()->json($householdMembers);
+            return response()->json($data, 200);
         } catch (\Exception $e) {
-            \Log::error("Error fetching household members: " . $e->getMessage());
-            return response()->json(['error' => 'Server Error'], 500);
+            return response()->json(['error' => 'Failed to fetch certificate types', 'message' => $e->getMessage()], 500);
         }
     }
 
-    public function getTotalPopulation()
+    // Certificate Purposes
+    public function getPurposeData()
     {
-        // Count all household members to get the total population
-        $totalPopulation = HouseholdMember::count();
+        try {
+            $data = BarangayResidentDocument::selectRaw('purpose, COUNT(*) as count')
+                ->groupBy('purpose')
+                ->orderBy('count', 'DESC') // Optional: Order by count for better visualization
+                ->get();
 
-        return response()->json(['total_population' => $totalPopulation]);
-    }
-
-    public function getAgeDistribution()
-    {
-        // Define the age brackets
-        $ageBrackets = [
-            '0-4' => [0, 4],
-            '5-9' => [5, 9],
-            '10-14' => [10, 14],
-            '15-19' => [15, 19],
-            '20-24' => [20, 24],
-            '25-29' => [25, 29],
-            '30-34' => [30, 34],
-            '35-39' => [35, 39],
-            '40-44' => [40, 44],
-            '45-49' => [45, 49],
-            '50-54' => [50, 54],
-            '55-59' => [55, 59],
-            '60+'  => [60, 120] // 60+ years bracket
-        ];
-
-        $ageBracketCounts = [];
-        foreach ($ageBrackets as $bracket => $range) {
-            // Count household members in each age bracket
-            $ageBracketCounts[] = HouseholdMember::whereBetween('age', $range)->count();
+            return response()->json($data, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch purposes', 'message' => $e->getMessage()], 500);
         }
-
-        // Calculate the percentage of senior citizens (60+)
-        $totalPopulation = array_sum($ageBracketCounts);
-        $seniorCitizensCount = HouseholdMember::where('age', '>=', 60)->count();
-        $seniorCitizenPercentage = $totalPopulation > 0 ? ($seniorCitizensCount / $totalPopulation) * 100 : 0;
-
-        // Return response in JSON format
-        return response()->json([
-            'ageBracketCounts' => $ageBracketCounts,
-            'seniorCitizenPercentage' => round($seniorCitizenPercentage, 2)
-        ]);
     }
 
-    public function getPopulationForecast()
+    // Issuance Timeline
+    public function getIssuanceTimelineData()
     {
-        $totalPopulation = HouseholdMember::count();
-        $employedCount = HouseholdMember::where('is_employed', 1)->count();
-        $unemployedCount = $totalPopulation - $employedCount;
+        try {
+            $data = BarangayResidentDocument::selectRaw('DATE(date_issued) as date, COUNT(*) as count')
+                ->groupBy('date')
+                ->orderBy('date', 'ASC')
+                ->get();
 
-        // Assumed 2% growth rate for next year's forecast
-        $growthRate = 1.02;
-        $forecast = [
-            'population' => round($totalPopulation * $growthRate),
-            'employed' => round($employedCount * $growthRate),
-            'unemployed' => round($unemployedCount * $growthRate),
-        ];
+            return response()->json($data, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch issuance timeline', 'message' => $e->getMessage()], 500);
+        }
+    }
 
-        return response()->json([
-            'current' => [
-                'population' => $totalPopulation,
-                'employed' => $employedCount,
-                'unemployed' => $unemployedCount,
-            ],
-            'forecast' => $forecast
-        ]);
+    // Notifications for Admin (where target_user = 0)
+    public function getNotifications()
+    {
+        try {
+            $notifications = Notification::select('id', 'target_user', 'message', 'status', 'created_at')
+                ->where('target_user', 0) // Filter for admin-specific notifications
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            return response()->json($notifications, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch notifications', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    // Forecasting Data (Example for Future Implementation)
+    public function getForecastingData()
+    {
+        try {
+            $currentYear = now()->year;
+
+            $forecastData = BarangayResidentDocument::selectRaw('MONTH(date_issued) as month, COUNT(*) as count')
+                ->whereYear('date_issued', $currentYear)
+                ->groupBy('month')
+                ->orderBy('month', 'ASC')
+                ->get();
+
+            return response()->json($forecastData, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch forecasting data', 'message' => $e->getMessage()], 500);
+        }
     }
 }

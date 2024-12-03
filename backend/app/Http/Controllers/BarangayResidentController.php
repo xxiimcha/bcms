@@ -63,6 +63,8 @@ class BarangayResidentController extends Controller
     }
 
     public function update(Request $request) {
+        \Log::info('Update request received:', $request->all());
+
         $resident = BarangayResident::findOrFail($request->id);
 
         $validated = $request->validate([

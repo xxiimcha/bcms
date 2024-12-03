@@ -47,25 +47,24 @@ export class FormComponent implements OnInit {
             this.residentId = params['id'];
         });
         this.profileForm = this.formBuilder.group({
-            id: null,
-            first_name: ['', [Validators.required]],
-            middle_name: '',
-            last_name: ['', [Validators.required]],
             date: ['', Validators.required],
+            first_name: ['', Validators.required],
+            middle_name: [''], // Optional field
+            last_name: ['', Validators.required],
             present_address: ['', Validators.required],
             sex: ['', Validators.required],
-            age: '',
-            civil_status: '',
-            birthdate: '',
-            previous_address: '',
-            house_owner: '',
-            months_years: '',
-            residency_type: '',
-            contact_number: '',
+            age: ['', Validators.required],
+            civil_status: ['', Validators.required],
+            birthdate: ['', Validators.required],
+            previous_address: [''], // Optional field
+            house_owner: [''], // Optional field
+            months_years: [''], // Optional field
+            residency_type: ['', Validators.required],
+            contact_number: ['', [Validators.required, Validators.pattern(/^(\+63|0)\d{10}$/)]], // Example phone validation
             purpose: ['', Validators.required],
-            other_purpose: '',
+            other_purpose: [''], // Optional field
             certificate: ['', Validators.required],
-        });        
+        });            
 
         if(this.mode === 'view') {
             this.disableAllExceptCertificate();
@@ -149,12 +148,15 @@ export class FormComponent implements OnInit {
     }
 
     disableAllExceptCertificate() {
-        Object.keys(this.profileForm.controls).forEach(key => {
-            if (key !== 'certificate' && key !== 'purpose' && key !== 'other_purpose') {
-                this.profileForm.get(key)!.disable();
-            }
-        });
-    }    
+    Object.keys(this.profileForm.controls).forEach(key => {
+        if (key !== 'certificate' && key !== 'purpose' && key !== 'other_purpose') {
+            this.profileForm.get(key)!.disable();
+        } else {
+            this.profileForm.get(key)!.enable(); // Ensure editable fields remain enabled
+        }
+    });
+}
+
 
     submitProfile() {
         this.apiService.updateResident(this.profileForm.value).subscribe(() => {

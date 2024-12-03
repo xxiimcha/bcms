@@ -1,54 +1,81 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class DashboardService {
-  private baseUrl = 'http://localhost:8000/api'; // Update this to your API's base URL
+    private apiUrl = 'http://localhost:8000/api';
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {}
 
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('authToken');
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-  }
+    // Function to get the authorization headers
+    private getHeaders(): HttpHeaders {
+        const token = localStorage.getItem('authToken'); // Assuming the token is stored in localStorage
+        if (!token) {
+            console.error('Authorization token not found in localStorage');
+        }
+        return new HttpHeaders({
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        });
+    }
 
-  // Method to fetch census profiles with token authorization
-  getCensusProfiles(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get(`${this.baseUrl}/census-profiles`, { headers });
-  }
+    // Error handling function
+    private handleError(error: any): Observable<never> {
+        console.error('API error occurred:', error);
+        return throwError(error);
+    }
 
-  // Method to fetch classification data with token authorization
-  getClassificationData(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get(`${this.baseUrl}/classification-data`, { headers });
-  }
+    // Get data for certificate types
+    getCertificateTypeData(): Observable<any[]> {
+        return this.http
+            .get<any[]>(`${this.apiUrl}/certificate-types`, {
+                headers: this.getHeaders()
+            })
+            .pipe(catchError(this.handleError));
+    }
 
-  // Method to fetch household members data with token authorization
-  getHouseholdMembers(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get(`${this.baseUrl}/household-members`, { headers });
+    getNotifications(): Observable<any[]> {
+      return this.http.get<any[]>(`${this.apiUrl}/notifications`, {
+          headers: this.getHeaders()
+      });
   }
+    // Get data for purposes
+    getPurposeData(): Observable<any[]> {
+        return this.http
+            .get<any[]>(`${this.apiUrl}/purposes`, {
+                headers: this.getHeaders()
+            })
+            .pipe(catchError(this.handleError));
+    }
 
-  // Method to fetch the total population
-  getTotalPopulation(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get(`${this.baseUrl}/total-population`, { headers });
-  }
+    // Get data for issuance timeline
+    getIssuanceTimelineData(): Observable<any[]> {
+        return this.http
+            .get<any[]>(`${this.apiUrl}/issuance-timeline`, {
+                headers: this.getHeaders()
+            })
+            .pipe(catchError(this.handleError));
+    }
 
-  // Method to fetch age distribution data for the age chart
-  getAgeDistribution(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get(`${this.baseUrl}/age-distribution`, { headers });
-  }
-  
-  getPopulationForecast(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get(`${this.baseUrl}/population-forecast`, { headers });
-  }
+    // Get total certificates issued
+    getTotalCertificates(): Observable<{ total: number }> {
+        return this.http
+            .get<{ total: number }>(`${this.apiUrl}/total-certificates`, {
+                headers: this.getHeaders()
+            })
+            .pipe(catchError(this.handleError));
+    }
+
+    // Get forecasting data (if applicable)
+    getForecastingData(): Observable<any[]> {
+        return this.http
+            .get<any[]>(`${this.apiUrl}/forecasting`, {
+                headers: this.getHeaders()
+            })
+            .pipe(catchError(this.handleError));
+    }
 }

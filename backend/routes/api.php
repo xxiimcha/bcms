@@ -40,12 +40,12 @@ Route::get('open-in-desktop', [SpecialURLController::class, 'open_in_desktop']);
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::get('/census-profiles', [DashboardController::class, 'getCensusProfiles']);
-    Route::get('/classification-data', [DashboardController::class, 'getClassificationData']);
-    Route::get('/household-members', [DashboardController::class, 'getHouseholdMembers']);
-    Route::get('/total-population', [DashboardController::class, 'getTotalPopulation']);
-    Route::get('/age-distribution', [DashboardController::class, 'getAgeDistribution']);
-    Route::get('/population-forecast', [DashboardController::class, 'getPopulationForecast']);
+    Route::get('/total-certificates', [DashboardController::class, 'getTotalCertificates']);
+    Route::get('/certificate-types', [DashboardController::class, 'getCertificateTypeData']);
+    Route::get('/purposes', [DashboardController::class, 'getPurposeData']);
+    Route::get('/issuance-timeline', [DashboardController::class, 'getIssuanceTimelineData']);
+    Route::get('/forecasting', [DashboardController::class, 'getForecastingData']); // Optional for forecasting
+    Route::get('/notifications', [DashboardController::class, 'getNotifications']);
 
     Route::post('/census-profiles', [CensusProfileController::class, 'store']);
     Route::get('/census-profiles', [CensusProfileController::class, 'index']);
@@ -59,7 +59,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/residents', [BarangayResidentController::class, 'residents']);
     Route::get('/resident/{id}', [BarangayResidentController::class, 'resident']);
     Route::post('/resident', [BarangayResidentController::class, 'store']);
-    Route::patch('/resident', [BarangayResidentController::class, 'update']);
+    Route::put('/update-resident', [BarangayResidentController::class, 'update']);
     Route::delete('/resident/{id}', [BarangayResidentController::class, 'destroy']);
     Route::post('/resident/change-password', [BarangayResidentController::class, 'resident_change_password']);
     Route::get('/resident-census/classifications', [BarangayResidentController::class, 'getAllClassificationCounts']);

@@ -1,127 +1,187 @@
 <div class="container py-5">
-    <!-- Header -->
-    <div class="row mb-5">
-        <div class="col">
-            <h2 class="text-center font-weight-bold text-primary dashboard-title">Dashboard Overview</h2>
-            <p class="text-center text-muted dashboard-subtitle">An overview of census data and classifications</p>
-        </div>
-    </div>
-
-    <!-- Statistics Row -->
-    <div class="row mb-5">
-        <!-- Total Population -->
-        <div class="col-xl-4 col-lg-6 mb-4">
-            <div class="card shadow-sm border-0 stats-card">
+    <!-- Key Statistics Row -->
+    <div class="row mb-5 text-center">
+        <!-- Total Certificates Issued -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h5 class="card-title text-muted mb-1">Total Population</h5>
-                            <span class="display-4 text-primary">{{ totalPopulation }}</span>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-users fa-3x text-primary"></i>
-                        </div>
-                    </div>
+                    <h6 class="card-title text-muted">Total Certificates Issued</h6>
+                    <h2 class="text-primary mb-0">{{ totalCertificates || 0 }}</h2>
                 </div>
             </div>
         </div>
 
-        <!-- Census Conducted -->
-        <div class="col-xl-4 col-lg-6 mb-4">
-            <div class="card shadow-sm border-0 stats-card">
+        <!-- Certificate Types -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h5 class="card-title text-muted mb-1">Census Conducted</h5>
-                            <span class="display-4 text-primary">{{ censusProfiles.length }}</span>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-clipboard-check fa-3x text-primary"></i>
-                        </div>
-                    </div>
+                    <h6 class="card-title text-muted">Certificate Types</h6>
+                    <h2 class="text-primary mb-0">{{ certificateTypeCount || 0 }}</h2>
                 </div>
             </div>
         </div>
 
-        <!-- Gender Distribution -->
-        <div class="col-xl-4 col-lg-12 mb-4">
-            <div class="card shadow-sm border-0 stats-card">
+        <!-- Monthly Issuance -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card shadow-sm border-0">
                 <div class="card-body">
-                    <h5 class="card-title text-muted mb-1">Gender Distribution</h5>
-                    <div class="d-flex align-items-center mt-3">
-                        <i class="fas fa-male fa-2x text-primary mr-3"></i>
-                        <span class="h4 text-primary">{{ maleCount }} ({{ malePercentage }}%)</span>
-                    </div>
-                    <div class="d-flex align-items-center mt-3">
-                        <i class="fas fa-female fa-2x text-danger mr-3"></i>
-                        <span class="h4 text-danger">{{ femaleCount }} ({{ femalePercentage }}%)</span>
-                    </div>
+                    <h6 class="card-title text-muted">Monthly Issuance</h6>
+                    <h2 class="text-primary mb-0">{{ monthlyIssuance || 0 }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Notifications -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Pending Notifications</h6>
+                    <h2 class="text-primary mb-0">{{ pendingNotifications || 0 }}</h2>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Chart Row -->
+    <!-- Analytics Section -->
     <div class="row">
-        <!-- Census Profiles per Classification (Pie Chart) -->
-        <div class="col-md-12 col-lg-6 mb-4">
-            <div class="card shadow-sm border-0 chart-card">
-                <div class="card-header bg-transparent border-bottom-0">
-                    <h4 class="text-primary font-weight-bold mb-0">Census Profiles per Classification</h4>
+        <!-- Certificates Issued Over Time -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light">
+                    <h5 class="text-primary font-weight-bold">Certificates Issued Over Time</h5>
                 </div>
                 <div class="card-body">
-                    <apx-chart 
-                        *ngIf="classificationOverviewChart"
-                        [series]="classificationOverviewChart.series" 
-                        [dataLabels]="classificationOverviewChart.dataLabels"
-                        [chart]="classificationOverviewChart.chart" 
-                        [labels]="classificationOverviewChart.labels"
-                        [responsive]="classificationOverviewChart.responsive"
+                    <apx-chart
+                        *ngIf="certificatesIssuedChart"
+                        [series]="certificatesIssuedChart.series"
+                        [chart]="certificatesIssuedChart.chart"
+                        [xaxis]="certificatesIssuedChart.xaxis"
+                        [stroke]="certificatesIssuedChart.stroke"
+                        [tooltip]="certificatesIssuedChart.tooltip"
                     ></apx-chart>
                 </div>
             </div>
         </div>
 
-        <!-- Age Distribution Chart -->
-        <div class="col-md-12 col-lg-6 mb-4">
-            <div class="card shadow-sm border-0 chart-card">
-                <div class="card-header bg-transparent border-bottom-0">
-                    <h4>About {{ seniorCitizenPercentage }}% belong to Senior Citizen Category</h4>
-                    <h6 class="text-muted">A healthy distribution of young adult residents can be observed</h6>
+        <!-- Certificate Type Distribution -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light">
+                    <h5 class="text-primary font-weight-bold">Certificate Type Distribution</h5>
                 </div>
                 <div class="card-body">
-                    <apx-chart 
-                        *ngIf="ageOverviewChart"
-                        [series]="ageOverviewChart.series" 
-                        [chart]="ageOverviewChart.chart" 
-                        [xaxis]="ageOverviewChart.xaxis" 
-                        [yaxis]="ageOverviewChart.yaxis" 
-                        [plotOptions]="ageOverviewChart.plotOptions"
-                        [tooltip]="ageOverviewChart.tooltip"
+                    <apx-chart
+                        *ngIf="certificateTypeChart"
+                        [series]="certificateTypeChart.series"
+                        [chart]="certificateTypeChart.chart"
+                        [labels]="certificateTypeChart.labels"
                     ></apx-chart>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="row mb-4">
-            <div class="col-md-12 col-lg-6 mb-4">
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-transparent border-bottom-0">
-                        <h4 class="text-primary font-weight-bold mb-0">Predictive Analysis for Population</h4>
-                    </div>
-                    <div class="card-body">
-                        <apx-chart 
-                            *ngIf="populationForecastChart"
-                            [series]="populationForecastChart.series" 
-                            [chart]="populationForecastChart.chart" 
-                            [xaxis]="populationForecastChart.xaxis" 
-                            [yaxis]="populationForecastChart.yaxis" 
-                            [stroke]="populationForecastChart.stroke" 
-                            [tooltip]="populationForecastChart.tooltip"
-                        ></apx-chart>
-                    </div>
+    <!-- Purpose Analysis -->
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light">
+                    <h5 class="text-primary font-weight-bold">Purpose of Certificate Issuance</h5>
+                </div>
+                <div class="card-body">
+                    <apx-chart
+                        *ngIf="purposeChart"
+                        [series]="purposeChart.series"
+                        [chart]="purposeChart.chart"
+                        [xaxis]="purposeChart.xaxis"
+                        [plotOptions]="purposeChart.plotOptions"
+                    ></apx-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Predictive Analytics -->
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light">
+                    <h5 class="text-primary font-weight-bold">Forecasting Certificate Demand</h5>
+                </div>
+                <div class="card-body">
+                    <apx-chart
+                        *ngIf="forecastingChart"
+                        [series]="forecastingChart.series"
+                        [chart]="forecastingChart.chart"
+                        [xaxis]="forecastingChart.xaxis"
+                        [stroke]="forecastingChart.stroke"
+                    ></apx-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Notifications -->
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light">
+                    <h5 class="text-primary font-weight-bold">Resident Notifications</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                       <li
+                            class="list-group-item d-flex justify-content-between align-items-center"
+                            *ngFor="let notification of notifications"
+                        >
+                            <span>{{ notification.residentName }}</span>
+                            <span class="badge bg-success">{{ notification.status }}</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .chart-container {
+        height: 300px;
+        width: 100%;
+    }
+
+    .card-header {
+        border-bottom: 1px solid #ddd;
+    }
+
+    .card-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+
+    .text-primary {
+        font-weight: bold;
+    }
+
+    .bg-light {
+        background-color: #f9f9f9 !important;
+    }
+
+    .list-group-item {
+        font-size: 0.9rem;
+    }
+
+    .badge {
+        font-size: 0.8rem;
+    }
+
+    @media (max-width: 768px) {
+        .chart-container {
+            height: 250px;
+        }
+
+        .card-title {
+            font-size: 0.85rem;
+        }
+    }
+</style>

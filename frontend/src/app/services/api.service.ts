@@ -48,18 +48,20 @@ export class ApiService {
         );
     }
 
-    updateResident(resident: FormGroup): Observable<BarangayResident> {
+    updateResident(resident: any): Observable<BarangayResident> {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
-        return this.http.patch<any>(`${this.apiUrl}/resident`, resident, { headers }).pipe(
+    
+        // Use PUT for updates
+        return this.http.put<any>(`${this.apiUrl}/update-resident`, resident, { headers }).pipe(
             tap((response) => {
                 return response;
             }),
             catchError(error => {
-                console.error('Error saving resident:', error);
+                console.error('Error updating resident:', error);
                 throw error;
             })
         );
-    }
+    }    
 
     deleteResident(id: number): Observable<BarangayResident> {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
