@@ -82,4 +82,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/resident-document/{id}', [BarangayResidentDocumentController::class, 'barangay_documents_resident']);
     Route::post('/resident-document', [BarangayResidentDocumentController::class, 'store']);
     Route::get('/resident-document-history/{id}', [BarangayResidentDocumentController::class, 'barangay_documents_resident_history']);
+    Route::put('/update-request/{id}', [BarangayResidentDocumentController::class, 'update']);
+
 });

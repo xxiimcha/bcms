@@ -8,6 +8,36 @@ use App\Models\BarangayResidentDocument;
 
 class BarangayResidentDocumentController extends Controller
 {
+    public function update(Request $request, $id)
+    {
+        // Validate the incoming request
+        $validatedData = $request->validate([
+            'certificate_type' => 'string|max:255',
+            'certificate_file' => 'nullable|string|max:255',
+            'purpose' => 'string|max:255',
+            'status' => 'string|max:50',
+        ]);
+
+        try {
+            // Find the document by ID
+            $residentDocument = BarangayResidentDocument::findOrFail($id);
+
+            // Update the document with the validated data
+            $residentDocument->update($validatedData);
+
+            // Return the updated document
+            return response()->json([
+                'message' => 'Resident document updated successfully',
+                'data' => $residentDocument,
+            ], 200);
+        } catch (\Exception $e) {
+            // Handle errors
+            return response()->json([
+                'message' => 'Error updating resident document',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
     public function barangay_documents_residents(Request $request)
     {
         $residents = BarangayResidentDocument::all();

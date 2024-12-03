@@ -198,6 +198,24 @@ export class ApiService {
         );
     }
 
+    updateResidentDocument(document: BarangayResidentDocument): Observable<BarangayResidentDocument> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.authToken);
+        return this.http.put<BarangayResidentDocument>(
+            `${this.apiUrl}/update-request/${document.id}`,
+            document,
+            { headers }
+        ).pipe(
+            tap((response) => {
+                console.log('Document updated successfully:', response);
+                return response;
+            }),
+            catchError((error) => {
+                console.error('Error updating document:', error);
+                throw error; // Rethrow the error after logging
+            })
+        );
+    }
+
     getResidentsDocumentById(id: any): Observable<BarangayResidentDocument> {
         if (this.authToken) {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`);

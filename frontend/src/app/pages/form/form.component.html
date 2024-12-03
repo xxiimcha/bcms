@@ -147,17 +147,32 @@
                                 <th>Date Issued</th>
                                 <th>Purpose</th>
                                 <th>Status</th>
+                                <th>Action</th> <!-- New Action column -->
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- If residentDocument exists -->
                             <tr *ngIf="residentDocument">
                                 <td>{{ residentDocument?.certificate_type }}</td>
                                 <td>{{ residentDocument?.date_issued }}</td>
                                 <td>{{ residentDocument?.purpose }}</td>
                                 <td>{{ residentDocument?.status }}</td>
+                                <td>
+                                    <button
+                                        class="btn btn-primary"
+                                        *ngIf="residentDocument?.status !== 'Released'"
+                                        (click)="releaseCertificate(residentDocument)"
+                                    >
+                                        Release
+                                    </button>
+                                    <span *ngIf="residentDocument?.status === 'Released'" class="text-success">
+                                        Released
+                                    </span>
+                                </td>
                             </tr>
+                            <!-- If no residentDocument -->
                             <tr *ngIf="!residentDocument">
-                                <td colspan="4" class="text-center">No Requested Form</td>
+                                <td colspan="5" class="text-center">No Requested Form</td>
                             </tr>
                         </tbody>
                     </table>

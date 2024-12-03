@@ -240,6 +240,23 @@ export class FormComponent implements OnInit {
         }
     }    
 
+    releaseCertificate(document: BarangayResidentDocument) {
+        // Update the status to "Released"
+        const updatedDocument = { ...document, status: 'Released' };
+    
+        // Call API to update the document status
+        this.apiService.updateResidentDocument(updatedDocument).subscribe(
+            (res) => {
+                this.toastr.success('Certificate released successfully', 'Success');
+                this.initializeNewResidentCertificate(); // Refresh the table data
+            },
+            (error) => {
+                console.error('Error releasing certificate:', error);
+                this.toastr.error('Error releasing certificate', 'Error');
+            }
+        );
+    }
+    
     generateQRCode() {
         this.modalService.open(QRModalComponent, { size: 'lg', backdrop: 'static', centered: true });
     }
